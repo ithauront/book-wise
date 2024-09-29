@@ -13,5 +13,6 @@ export const globalStyles = globalCss({
     backgroundColor: theme.colors['gray-800'],
     color: theme.colors['gray-100'],
     '-webkit-font-smoothing': 'antialiased',
+    padding: '$5',
   },
 })
