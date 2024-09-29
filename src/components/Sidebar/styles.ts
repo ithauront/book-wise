@@ -1,5 +1,5 @@
-import { keyframes } from '@stitches/react'
 import { styled } from '../../styles'
+import { shake } from '../styles.utils'
 
 export const SidebarContainer = styled('div', {
   height: '100vh',
@@ -78,14 +78,6 @@ export const Logged = styled('div', {
   p: {
     fontWeight: 'bold',
   }, // TODO modificar o bold apenas para uma variante para quando estiver no login
-})
-
-const shake = keyframes({
-  '0%': { transform: 'translateX(0)' },
-  '25%': { transform: 'translateX(-2px)' },
-  '50%': { transform: 'translateX(2px)' },
-  '75%': { transform: 'translateX(-2px)' },
-  '100%': { transform: 'translateX(0)' },
 })
 
 export const LoginButton = styled('button', {
