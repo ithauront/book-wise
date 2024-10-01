@@ -1,5 +1,5 @@
 import { styled } from '../../stitches.config'
-
+// TODO fazer responsividade para telas menores
 export const HomeContainer = styled('div', {
   display: 'flex',
   alignItems: 'center',
