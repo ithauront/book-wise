@@ -12,21 +12,22 @@ export enum SignInEnterprise {
 
 interface SignInButtonProps {
   variant: SignInEnterprise
+  onClick?: () => void
 }
-// TODO fazer ele receber a logica no onclick para fazer signIn
-export function SignInButton({ variant }: SignInButtonProps) {
+
+export function SignInButton({ variant, onClick }: SignInButtonProps) {
   const renderLogo = () => {
     switch (variant) {
       case SignInEnterprise.Google:
         return (
-          <Button>
+          <Button onClick={onClick}>
             <Image src={googleLogo} alt="Google logo" width={32} height={32} />
             <p>Entrar com Google</p>
           </Button>
         )
       case SignInEnterprise.Github:
         return (
-          <Button>
+          <Button onClick={onClick}>
             <Image src={githubLogo} alt="Github logo" width={32} height={32} />
             <p>Entrar com Github</p>
           </Button>
@@ -34,7 +35,7 @@ export function SignInButton({ variant }: SignInButtonProps) {
       case SignInEnterprise.Visitor:
       default:
         return (
-          <Button>
+          <Button onClick={onClick}>
             <RocketLaunch size={32} />
             <p>Acessar como visitante</p>
           </Button>

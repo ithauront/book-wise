@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import cover from '../../../public/assets/cover-book-wise.svg'
+import { signIn } from 'next-auth/react'
 import {
   ButtonBox,
   HomeContainer,
@@ -24,8 +25,14 @@ export default function Home() {
             <p>Faça seu login ou acesse como visitante.</p>
           </TextBox>
           <ButtonBox>
-            <SignInButton variant={SignInEnterprise.Google} />
-            <SignInButton variant={SignInEnterprise.Github} />
+            <SignInButton
+              onClick={() => signIn('google')}
+              variant={SignInEnterprise.Google}
+            />
+            <SignInButton
+              onClick={() => signIn('github')}
+              variant={SignInEnterprise.Github}
+            />
             <SignInButton variant={SignInEnterprise.Visitor} />
           </ButtonBox>
         </LoginBox>

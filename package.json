@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "book-wise",
   "version": "0.1.0",
   "private": true,
@@ -18,9 +17,12 @@
     "@stitches/react": "^1.2.8",
     "@types/react": "18.3.9",
     "@types/react-dom": "18.3.0",
+    "axios": "^1.7.7",
     "eslint": "8.57.1",
     "eslint-config-next": "14.2.13",
     "next": "14.2.13",
+    "next-auth": "^4.24.8",
+    "nookies": "^2.5.2",
     "phosphor-react": "^1.4.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
+    "@types/cookie": "^0.6.0",
     "@types/node": "^22.7.4",
     "@types/uuid": "^10.0.0",
     "prisma": "^5.20.0",
