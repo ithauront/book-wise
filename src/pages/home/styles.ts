@@ -38,3 +38,9 @@ export const TextBox = styled('div', {
     fontSize: '$4',
   },
 })
+
+export const AuthError = styled('p', {
+  color: '$red',
+  marginBottom: '$4',
+  fontSize: '$sm',
+})
