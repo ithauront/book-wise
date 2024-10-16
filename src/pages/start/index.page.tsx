@@ -22,12 +22,16 @@ import { useSession } from 'next-auth/react'
 export default function Sart() {
   const { data: session } = useSession()
 
+  const user = session
+    ? {
+        name: session.user?.name || 'User',
+        avatar: session.user?.image || undefined,
+      }
+    : null
+
   return (
     <StartContainer>
-      <Sidebar
-        isLoggedIn={!!session}
-        avatarSrc={session?.user?.image ?? undefined}
-      />
+      <Sidebar isLoggedIn={!!session} user={user} />
 
       <MainContainer>
         <p>

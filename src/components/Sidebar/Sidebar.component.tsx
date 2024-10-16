@@ -12,12 +12,17 @@ import { Binoculars, ChartLineUp, SignIn, SignOut, User } from 'phosphor-react'
 import { useRouter } from 'next/router'
 import { Avatar } from '../Avatar/Avatar.component'
 
-interface SidebarProps {
-  isLoggedIn: boolean
-  avatarSrc?: string
+interface User {
+  name: string | null
+  avatar?: string
 }
 
-export function Sidebar({ isLoggedIn = false, avatarSrc }: SidebarProps) {
+interface SidebarProps {
+  isLoggedIn: boolean
+  user?: User | null
+}
+
+export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
   const router = useRouter()
   const currentPath = router.pathname // TODO Verify once the pages are done if route and variant on navigation is working
 
@@ -54,8 +59,8 @@ export function Sidebar({ isLoggedIn = false, avatarSrc }: SidebarProps) {
 
       {isLoggedIn ? (
         <Logged>
-          <Avatar size="sm" src={avatarSrc} alt="Avatar do usuário" />
-          <p>User</p>
+          <Avatar size="sm" src={user?.avatar} alt="Avatar do usuário" />
+          <p>{user?.name}</p>
           <LoginButton onClick={handleLogin}>
             <SignOut color="red" size={20} />
           </LoginButton>
