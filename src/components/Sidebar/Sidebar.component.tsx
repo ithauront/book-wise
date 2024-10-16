@@ -11,16 +11,17 @@ import Image from 'next/image'
 import { Binoculars, ChartLineUp, SignIn, SignOut, User } from 'phosphor-react'
 import { useRouter } from 'next/router'
 import { Avatar } from '../Avatar/Avatar.component'
-import { useState } from 'react'
 
-export function Sidebar() {
-  const [isLogedIn, setIsLogedIn] = useState(false)
+interface SidebarProps {
+  isLoggedIn: boolean
+  avatarSrc?: string
+}
+
+export function Sidebar({ isLoggedIn = false, avatarSrc }: SidebarProps) {
   const router = useRouter()
   const currentPath = router.pathname // TODO Verify once the pages are done if route and variant on navigation is working
 
-  const handleLogin = () => {
-    setIsLogedIn(!isLogedIn)
-  } // TODO implement real login once the autentication process is done
+  const handleLogin = () => {} // TODO implement real login once the autentication process is done
 
   return (
     <SidebarContainer>
@@ -28,8 +29,8 @@ export function Sidebar() {
         <Image src={logo} alt="Book-wise logo" quality={100} />
         <Nav>
           <NavItem
-            onClick={() => router.push('/inicio')}
-            selected={currentPath === '/inicio'}
+            onClick={() => router.push('/start')}
+            selected={currentPath === '/start'}
           >
             <ChartLineUp size={24} />
             <p>Início</p>
@@ -51,13 +52,9 @@ export function Sidebar() {
         </Nav>
       </LogoNavContainer>
 
-      {isLogedIn ? (
+      {isLoggedIn ? (
         <Logged>
-          <Avatar
-            size="sm"
-            src="https://avatars.githubusercontent.com/u/123806396?v=4"
-            alt="Avatar do usuário"
-          />
+          <Avatar size="sm" src={avatarSrc} alt="Avatar do usuário" />
           <p>User</p>
           <LoginButton onClick={handleLogin}>
             <SignOut color="red" size={20} />
