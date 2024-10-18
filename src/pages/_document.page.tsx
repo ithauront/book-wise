@@ -25,6 +25,7 @@ export default class Document extends NextDocument {
         </Head>
         <body>
           <Main />
+          <div id="portal-root" />
           <NextScript />
         </body>
       </Html>
