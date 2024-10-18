@@ -67,26 +67,20 @@ export const NavItem = styled('button', {
   },
 })
 
-export const Logged = styled('div', {
-  display: 'flex',
-  padding: '$1',
-  gap: '$3',
-
-  alignItems: 'center',
-  color: '$gray-200',
-
-  p: {
-    fontWeight: 'bold',
-  }, // TODO modificar o bold apenas para uma variante para quando estiver no login
-})
-
 export const LoginButton = styled('button', {
   all: 'unset',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  gap: '$3',
+  padding: '$1',
 
   cursor: 'pointer',
+
+  p: {
+    fontWeight: 'bold',
+    color: '$gray-200',
+  }, // TODO modificar o bold apenas para uma variante para quando estiver no login
 
   transition: '0.2s ease',
 
