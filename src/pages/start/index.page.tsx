@@ -18,7 +18,6 @@ import {
 import BookCover from '../../../public/assets/fragmentos-do-horror.png'
 import { useSession } from 'next-auth/react'
 
-// TODO add the href to explore page
 export default function Sart() {
   const { data: session } = useSession()
 

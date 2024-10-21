@@ -50,8 +50,8 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
               <p>Início</p>
             </NavItem>
             <NavItem
-              onClick={() => router.push('/explorar')}
-              selected={currentPath === '/explorar'}
+              onClick={() => router.push('/explore')}
+              selected={currentPath === '/explore'}
             >
               <Binoculars size={24} />
               <p>Explorar</p>

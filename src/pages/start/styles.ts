@@ -137,6 +137,26 @@ export const BookReview = styled('div', {
       },
       false: {},
     },
+    isExplore: {
+      true: {
+        '> :first-child': {
+          width: '6.75rem',
+          height: '9.5rem',
+        },
+
+        section: {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+
+          height: 'inherit',
+          '> :last-child': {
+            display: 'inline',
+          },
+        },
+      },
+      false: {},
+    },
   },
 })
 
