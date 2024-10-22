@@ -1,7 +1,4 @@
-import Image from 'next/image'
 import { Sidebar } from '../../components/Sidebar/Sidebar.component'
-import { StarReview } from '../../components/StarReview/StarReview.component'
-
 import BookCover from '../../../public/assets/fragmentos-do-horror.png'
 import { useSession } from 'next-auth/react'
 import {
@@ -12,7 +9,7 @@ import {
   TitleContainer,
 } from './styles'
 import { SearchBar } from '../../components/SearchBar/SearchBar'
-import { BookBox, BookReview } from '../start/styles'
+import { BookBox } from '../../components/BookBox/BookBox.component'
 
 export default function Explore() {
   const { data: session } = useSession()
@@ -41,162 +38,79 @@ export default function Explore() {
         </TitleContainer>
         <div>Badges</div>
         <ExploreContent>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
 
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isExplore>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookName="Fragmentos do horror"
+            bookAuthor="Junji Ito"
+            reviewStarsTotal={3}
+          />
         </ExploreContent>
       </MainContainer>
     </ExploreContainer>

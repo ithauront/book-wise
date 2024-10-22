@@ -1,7 +1,4 @@
-import Image from 'next/image'
-import { Avatar } from '../../components/Avatar/Avatar.component'
 import { Sidebar } from '../../components/Sidebar/Sidebar.component'
-import { StarReview } from '../../components/StarReview/StarReview.component'
 import {
   TrendingBooks,
   MainContainer,
@@ -10,13 +7,11 @@ import {
   StyledChartLineUp,
   SessionTitle,
   AsideContainer,
-  BookBox,
-  BookBoxHeader,
-  BookReview,
 } from './styles'
 
 import BookCover from '../../../public/assets/fragmentos-do-horror.png'
 import { useSession } from 'next-auth/react'
+import { BookBox } from '../../components/BookBox/BookBox.component'
 
 export default function Sart() {
   const { data: session } = useSession()
@@ -28,6 +23,13 @@ export default function Sart() {
       }
     : null
 
+  const bookBoxHeader = {
+    userName: 'Iuri Reis',
+    reviewDate: 'Hoje',
+    avatarSrc:
+      'https://avatars.githubusercontent.com/u/123806396?s=400&u=d8595c2dacae28530feec7e6cd8520d25368ab39&v=4',
+    reviewStarsFromUser: 4,
+  }
   return (
     <StartContainer>
       <Sidebar isLoggedIn={!!session} user={user} />
@@ -42,114 +44,50 @@ export default function Sart() {
             <p>Adiçoes recentes</p>
             <a>Ver todos &gt; </a>
           </SessionTitle>
-          <BookBox>
-            <BookBoxHeader>
-              <Avatar src="https://avatars.githubusercontent.com/u/123806396?s=400&u=d8595c2dacae28530feec7e6cd8520d25368ab39&v=4" />
-
-              <div>
-                <h3>Iuri Reis</h3>
-                <p>Hoje</p>
-              </div>
-
-              <StarReview review={4} />
-            </BookBoxHeader>
-            <BookReview>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
+          <BookBox
+            headerProps={bookBoxHeader}
+            reviewText="   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
                   labore cumque consequatur quis eligendi, explicabo non
                   incidunt aspernatur aliquam rem maiores totam quasi
-                  voluptates. Minima officiis deserunt asperiores magnam iusto.
-                </p>
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookBoxHeader>
-              <Avatar src="https://avatars.githubusercontent.com/u/123806396?s=400&u=d8595c2dacae28530feec7e6cd8520d25368ab39&v=4" />
-
-              <div>
-                <h3>Iuri Reis</h3>
-                <p>Hoje</p>
-              </div>
-
-              <StarReview review={4} />
-            </BookBoxHeader>
-            <BookReview>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
+                  voluptates. Minima officiis deserunt asperiores magnam iusto."
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            bookCover={BookCover.src}
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            headerProps={bookBoxHeader}
+            reviewText="   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
                   labore cumque consequatur quis eligendi, explicabo non
                   incidunt aspernatur aliquam rem maiores totam quasi
-                  voluptates. Minima officiis deserunt asperiores magnam iusto.
-                </p>
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookBoxHeader>
-              <Avatar src="https://avatars.githubusercontent.com/u/123806396?s=400&u=d8595c2dacae28530feec7e6cd8520d25368ab39&v=4" />
-
-              <div>
-                <h3>Iuri Reis</h3>
-                <p>Hoje</p>
-              </div>
-
-              <StarReview review={4} />
-            </BookBoxHeader>
-            <BookReview>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
+                  voluptates. Minima officiis deserunt asperiores magnam iusto."
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            bookCover={BookCover.src}
+            reviewStarsTotal={3}
+          />
+          <BookBox
+            headerProps={bookBoxHeader}
+            reviewText="   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
                   labore cumque consequatur quis eligendi, explicabo non
                   incidunt aspernatur aliquam rem maiores totam quasi
-                  voluptates. Minima officiis deserunt asperiores magnam iusto.
-                </p>
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookBoxHeader>
-              <Avatar src="https://avatars.githubusercontent.com/u/123806396?s=400&u=d8595c2dacae28530feec7e6cd8520d25368ab39&v=4" />
-
-              <div>
-                <h3>Iuri Reis</h3>
-                <p>Hoje</p>
-              </div>
-
-              <StarReview review={4} />
-            </BookBoxHeader>
-            <BookReview>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
-                  labore cumque consequatur quis eligendi, explicabo non
-                  incidunt aspernatur aliquam rem maiores totam quasi
-                  voluptates. Minima officiis deserunt asperiores magnam iusto.
-                </p>
-              </section>
-            </BookReview>
-          </BookBox>
+                  voluptates. Minima officiis deserunt asperiores magnam iusto."
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            bookCover={BookCover.src}
+            reviewStarsTotal={3}
+          />{' '}
+          <BookBox
+            headerProps={bookBoxHeader}
+            reviewText="   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad
+                labore cumque consequatur quis eligendi, explicabo non
+                incidunt aspernatur aliquam rem maiores totam quasi
+                voluptates. Minima officiis deserunt asperiores magnam iusto."
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            bookCover={BookCover.src}
+            reviewStarsTotal={3}
+          />
         </MyBooks>
       </MainContainer>
 
@@ -159,58 +97,31 @@ export default function Sart() {
           <a>Ver todos &gt; </a>
         </SessionTitle>
         <TrendingBooks>
-          <BookBox>
-            <BookReview isSummary>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
+          <BookBox
+            bookCover={BookCover.src}
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            reviewStarsTotal={4}
+          />
 
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isSummary>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isSummary>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
-          <BookBox>
-            <BookReview isSummary>
-              <Image src={BookCover} alt="Book cover" />
-              <section>
-                <div>
-                  <h3>Fragmentos do horror</h3>
-                  <p>Junji Ito</p>
-                </div>
-
-                <StarReview review={3} />
-              </section>
-            </BookReview>
-          </BookBox>
+          <BookBox
+            bookCover={BookCover.src}
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            reviewStarsTotal={4}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            reviewStarsTotal={4}
+          />
+          <BookBox
+            bookCover={BookCover.src}
+            bookAuthor="Junji Ito"
+            bookName="Fragmentos do horror"
+            reviewStarsTotal={4}
+          />
         </TrendingBooks>
       </AsideContainer>
     </StartContainer>
