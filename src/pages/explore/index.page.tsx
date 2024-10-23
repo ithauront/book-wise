@@ -5,14 +5,18 @@ import {
   ExploreContainer,
   ExploreContent,
   MainContainer,
+  SearchTopicsContainer,
   StyledBinocular,
   TitleContainer,
 } from './styles'
 import { SearchBar } from '../../components/SearchBar/SearchBar'
 import { BookBox } from '../../components/BookBox/BookBox.component'
+import { SearchTopic } from '../../components/SearchTopics/SearchTopics.component'
+import { useState } from 'react'
 
 export default function Explore() {
   const { data: session } = useSession()
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([])
 
   const user = session
     ? {
@@ -21,6 +25,22 @@ export default function Explore() {
       }
     : null
 
+  const handleTopicClick = (topic: string) => {
+    setSelectedTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
+    )
+  }
+
+  const topics = [
+    'Tudo',
+    'Computação',
+    'Educação',
+    'Fantasia',
+    'Ficção científica',
+    'Horror',
+    'HQs',
+    'Suspense',
+  ] // TODO mudar isso para uma chamada nas categories do constant do database.
   return (
     <ExploreContainer>
       <Sidebar isLoggedIn={!!session} user={user} />
@@ -36,7 +56,17 @@ export default function Explore() {
             onSubmit={() => console.log('buscado')}
           />
         </TitleContainer>
-        <div>Badges</div>
+        <SearchTopicsContainer>
+          {topics.map((topic) => (
+            <SearchTopic
+              key={topic}
+              content={topic}
+              isSelected={selectedTopics.includes(topic)}
+              onClick={() => handleTopicClick(topic)}
+            />
+          ))}
+        </SearchTopicsContainer>
+
         <ExploreContent>
           <BookBox
             bookCover={BookCover.src}

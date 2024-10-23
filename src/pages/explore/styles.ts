@@ -14,6 +14,13 @@ export const MainContainer = styled('div', {
   gap: '$10',
 })
 
+export const SearchTopicsContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  gap: '$3',
+})
+
 export const TitleContainer = styled('div', {
   display: 'flex',
   gap: '31rem',
