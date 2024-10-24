@@ -61,6 +61,13 @@ export const authOptions: NextAuthOptions = {
 
       return true
     },
+    async session({ session, user }) {
+      session.user = {
+        ...session.user,
+        avatar_url: user.avatar_url,
+      }
+      return session
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 }

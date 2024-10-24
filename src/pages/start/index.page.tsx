@@ -19,7 +19,7 @@ export default function Sart() {
   const user = session
     ? {
         name: session.user?.name || 'User',
-        avatar: session.user?.image || undefined,
+        avatar: session.user?.avatar_url || undefined,
       }
     : null
 
