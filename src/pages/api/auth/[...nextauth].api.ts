@@ -1,8 +1,10 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
-import GithubProvider from 'next-auth/providers/github'
-import GoogleProvider from 'next-auth/providers/google'
+import GithubProvider, { GithubProfile } from 'next-auth/providers/github'
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
+import { PrismaAdapter } from '../../../lib/auth/prisma-adapter'
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(),
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID ?? '',
@@ -11,6 +13,14 @@ export const authOptions: NextAuthOptions = {
         params: {
           scope: 'read:user user:email',
         },
+      },
+      profile(profile: GithubProfile) {
+        return {
+          id: String(profile.id),
+          name: profile.name || profile.login,
+          email: profile.email,
+          avatar_url: profile.avatar_url,
+        }
       },
     }),
     GoogleProvider({
@@ -21,6 +31,14 @@ export const authOptions: NextAuthOptions = {
           scope:
             'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
         },
+      },
+      profile(profile: GoogleProfile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          avatar_url: profile.picture,
+        }
       },
     }),
   ],

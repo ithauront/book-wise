@@ -35,7 +35,7 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
   const handleCloseModal = () => {
     setIsModalOpen(false)
   }
-
+  console.log(user)
   return (
     <>
       <SidebarContainer>
