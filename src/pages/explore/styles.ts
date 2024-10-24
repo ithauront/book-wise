@@ -23,7 +23,7 @@ export const SearchTopicsContainer = styled('div', {
 
 export const TitleContainer = styled('div', {
   display: 'flex',
-  gap: '31rem',
+
   alignItems: 'center',
   justifyContent: 'space-between',
 
@@ -36,6 +36,7 @@ export const TitleContainer = styled('div', {
   },
   '> :last-child': {
     width: '27rem',
+    marginRight: '2rem',
   },
 })
 
