@@ -4,6 +4,7 @@ import { Box } from '../Box/Box.component'
 export const BookBoxContainer = styled(Box, {
   padding: '$6',
   gap: '$8',
+  width: '20rem',
 })
 
 export const BookBoxHeader = styled('div', {
