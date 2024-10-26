@@ -1,5 +1,4 @@
 import { Sidebar } from '../../components/Sidebar/Sidebar.component'
-import BookCover from '../../../public/assets/fragmentos-do-horror.png'
 import { useSession } from 'next-auth/react'
 import {
   ExploreContainer,
@@ -12,11 +11,45 @@ import {
 import { SearchBar } from '../../components/SearchBar/SearchBar'
 import { BookBox } from '../../components/BookBox/BookBox.component'
 import { SearchTopic } from '../../components/SearchTopics/SearchTopics.component'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api } from '../../lib/axios'
+
+interface Rating {
+  id: string
+  rate: number
+  description: string
+  created_at: Date
+  book_id: string
+  user_id: string
+}
+
+interface Book {
+  id: string
+  name: string
+  author: string
+  summary: string
+  cover_url: string
+  total_pages: number
+  created_at: Date
+  ratings: Rating[]
+}
 
 export default function Explore() {
   const { data: session } = useSession()
   const [selectedTopics, setSelectedTopics] = useState<string[]>([])
+  const [books, setBooks] = useState<Book[]>([])
+
+  useEffect(() => {
+    const listBooks = async () => {
+      try {
+        const response = await api.get('/list-books')
+        setBooks(response.data.allBooks)
+      } catch (error) {
+        console.error('Error fetching books:', error)
+      }
+    }
+    listBooks()
+  }, [])
 
   const user = session
     ? {
@@ -68,79 +101,21 @@ export default function Explore() {
         </SearchTopicsContainer>
 
         <ExploreContent>
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookName="Fragmentos do horror"
-            bookAuthor="Junji Ito"
-            reviewStarsTotal={3}
-          />
+          {books.map((book) => {
+            const averageRatings = book.ratings.length
+              ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
+                book.ratings.length
+              : 0
+            return (
+              <BookBox
+                key={book.id}
+                bookCover={`/${book.cover_url}`}
+                bookName={book.name}
+                bookAuthor={book.author}
+                reviewStarsTotal={averageRatings}
+              />
+            )
+          })}
         </ExploreContent>
       </MainContainer>
     </ExploreContainer>
