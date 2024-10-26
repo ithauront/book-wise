@@ -20,7 +20,11 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
-  const allBooks = await prisma.book.findMany()
+  const allBooks = await prisma.book.findMany({
+    include: {
+      ratings: true,
+    },
+  })
 
   res.status(200).json({ allBooks })
 }
