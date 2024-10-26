@@ -9,7 +9,7 @@ import {
   AsideContainer,
 } from './styles'
 
-import BookCover from '../../../public/assets/fragmentos-do-horror.png'
+import BookCover from '../../../public/images/books/fragmentos-do-horror.png'
 import { useSession } from 'next-auth/react'
 import { BookBox } from '../../components/BookBox/BookBox.component'
 
