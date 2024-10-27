@@ -13,30 +13,11 @@ import { BookBox } from '../../components/BookBox/BookBox.component'
 import { SearchTopic } from '../../components/SearchTopics/SearchTopics.component'
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
-
-interface Rating {
-  id: string
-  rate: number
-  description: string
-  created_at: Date
-  book_id: string
-  user_id: string
-}
-
-interface Book {
-  id: string
-  name: string
-  author: string
-  summary: string
-  cover_url: string
-  total_pages: number
-  created_at: Date
-  ratings: Rating[]
-}
+import { Book } from './explore.types'
 
 export default function Explore() {
   const { data: session } = useSession()
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([])
+  const [selectedTopics, setSelectedTopics] = useState<string[]>(['Todos'])
   const [books, setBooks] = useState<Book[]>([])
 
   useEffect(() => {
@@ -51,6 +32,37 @@ export default function Explore() {
     listBooks()
   }, [])
 
+  const topics = [
+    'Todos',
+    ...Array.from(
+      new Set(
+        books.flatMap((book) =>
+          book.categories.map((cat) => cat.category.name),
+        ),
+      ),
+    ),
+  ]
+
+  const handleTopicClick = (topic: string) => {
+    if (topic === 'Todos') {
+      setSelectedTopics(['Todos'])
+    } else {
+      setSelectedTopics((prev) =>
+        prev.includes(topic)
+          ? prev.filter((t) => t !== topic)
+          : [...prev.filter((t) => t !== 'Todos'), topic],
+      )
+    }
+  }
+
+  const filtredBooks = selectedTopics.includes('Todos')
+    ? books
+    : books.filter((book) =>
+        book.categories.some((cat) =>
+          selectedTopics.includes(cat.category.name),
+        ),
+      )
+
   const user = session
     ? {
         name: session.user?.name || 'User',
@@ -58,22 +70,6 @@ export default function Explore() {
       }
     : null
 
-  const handleTopicClick = (topic: string) => {
-    setSelectedTopics((prev) =>
-      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
-    )
-  }
-
-  const topics = [
-    'Tudo',
-    'Computação',
-    'Educação',
-    'Fantasia',
-    'Ficção científica',
-    'Horror',
-    'HQs',
-    'Suspense',
-  ] // TODO mudar isso para uma chamada nas categories do constant do database.
   return (
     <ExploreContainer>
       <Sidebar isLoggedIn={!!session} user={user} />
@@ -101,7 +97,7 @@ export default function Explore() {
         </SearchTopicsContainer>
 
         <ExploreContent>
-          {books.map((book) => {
+          {filtredBooks.map((book) => {
             const averageRatings = book.ratings.length
               ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
                 book.ratings.length

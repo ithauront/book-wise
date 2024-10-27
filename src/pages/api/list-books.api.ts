@@ -23,6 +23,11 @@ export default async function handle(
   const allBooks = await prisma.book.findMany({
     include: {
       ratings: true,
+      categories: {
+        select: {
+          category: true,
+        },
+      },
     },
   })
 

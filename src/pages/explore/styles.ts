@@ -19,6 +19,8 @@ export const SearchTopicsContainer = styled('div', {
   alignItems: 'center',
   justifyContent: 'flex-start',
   gap: '$3',
+  maxWidth: '62.25rem',
+  flexWrap: 'wrap',
 })
 
 export const TitleContainer = styled('div', {
