@@ -109,6 +109,7 @@ export default function Explore() {
                 bookName={book.name}
                 bookAuthor={book.author}
                 reviewStarsTotal={averageRatings}
+                isExplore
               />
             )
           })}

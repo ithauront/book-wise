@@ -17,6 +17,8 @@ export interface BookBoxProps {
   bookName: string
   bookAuthor: string
   reviewStarsTotal: number
+  isSummary?: boolean
+  isExplore?: boolean
 }
 
 export function BookBox({
@@ -26,6 +28,8 @@ export function BookBox({
   bookAuthor,
   reviewStarsTotal,
   reviewText,
+  isSummary = false,
+  isExplore = false,
 }: BookBoxProps) {
   return (
     <BookBoxContainer>
@@ -41,7 +45,7 @@ export function BookBox({
           <StarReview review={headerProps.reviewStarsFromUser} />
         </BookBoxHeader>
       ) : null}
-      <BookReview isExplore>
+      <BookReview isSummary={isSummary} isExplore={isExplore}>
         <Image src={bookCover} alt="Book cover" width={150} height={200} />
         <section>
           <div>

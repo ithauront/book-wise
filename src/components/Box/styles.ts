@@ -1,6 +1,7 @@
 import { styled } from '../../styles'
 
-export const BoxComponent = styled('div', {
+export const BoxComponent = styled('button', {
+  all: 'unset',
   display: 'flex',
   flexDirection: 'column',
 

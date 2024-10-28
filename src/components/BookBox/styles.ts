@@ -4,7 +4,7 @@ import { Box } from '../Box/Box.component'
 export const BookBoxContainer = styled(Box, {
   padding: '$6',
   gap: '$8',
-  width: '20rem',
+  minWidth: '20rem',
 })
 
 export const BookBoxHeader = styled('div', {
@@ -45,22 +45,26 @@ export const BookReview = styled('div', {
     alignItems: 'flex-start',
     textAlign: 'left',
     gap: '$5',
+
+    '> :last-child': {
+      display: 'inline',
+    },
   },
 
   '> div': {
     display: 'flex',
     flexDirection: 'column',
+  },
 
-    h3: {
-      color: '$gray-100',
-      fontSize: '$md',
-      fontWeight: '$bold',
-    },
+  'div > h3': {
+    color: '$gray-100',
+    fontSize: '$md',
+    fontWeight: '$bold',
+  },
 
-    'div > p': {
-      color: '$gray-400',
-      fontSize: '$sm',
-    },
+  'div > p': {
+    color: '$gray-400',
+    fontSize: '$sm',
   },
 
   'section > p': {
@@ -87,7 +91,7 @@ export const BookReview = styled('div', {
           },
         },
       },
-      false: {}, // TODO ver se o issummary realmente é necessario.
+      false: {},
     },
     isExplore: {
       true: {
@@ -106,8 +110,18 @@ export const BookReview = styled('div', {
             display: 'inline',
           },
         },
+        'div > h3': {
+          color: '$gray-100',
+          fontSize: '$md',
+          fontWeight: '$bold',
+          width: '10rem',
+        },
       },
       false: {},
     },
+  },
+  defaultVariants: {
+    isSummary: false,
+    isExplore: false,
   },
 })
