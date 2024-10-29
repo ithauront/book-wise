@@ -13,7 +13,7 @@ import { BookBox } from '../../components/BookBox/BookBox.component'
 import { SearchTopic } from '../../components/SearchTopics/SearchTopics.component'
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
-import { Book } from './explore.types'
+import { Book } from '../types'
 
 export default function Explore() {
   const { data: session } = useSession()
@@ -36,9 +36,10 @@ export default function Explore() {
     'Todos',
     ...Array.from(
       new Set(
-        books.flatMap((book) =>
-          book.categories.map((cat) => cat.category.name),
-        ),
+        books
+          .flatMap((book) => book.categories || [])
+          .map((cat) => cat.category.name)
+          .filter((name): name is string => !!name),
       ),
     ),
   ]
@@ -58,8 +59,8 @@ export default function Explore() {
   const filtredBooks = selectedTopics.includes('Todos')
     ? books
     : books.filter((book) =>
-        book.categories.some((cat) =>
-          selectedTopics.includes(cat.category.name),
+        book.categories?.some((cat) =>
+          selectedTopics.includes(cat.category.name || ''),
         ),
       )
 
@@ -98,7 +99,7 @@ export default function Explore() {
 
         <ExploreContent>
           {filtredBooks.map((book) => {
-            const averageRatings = book.ratings.length
+            const averageRatings = book.ratings?.length
               ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
                 book.ratings.length
               : 0
