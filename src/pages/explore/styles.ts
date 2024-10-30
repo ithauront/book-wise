@@ -25,7 +25,7 @@ export const SearchTopicsContainer = styled('div', {
 
 export const TitleContainer = styled('div', {
   display: 'flex',
-  width: '62.25rem',
+  marginRight: '1.5rem',
 
   alignItems: 'center',
   justifyContent: 'space-between',

@@ -7,8 +7,6 @@ interface StarReviewProps extends ComponentProps<typeof StarReviewContainer> {
   isNotReviable?: boolean
 }
 
-// TODO logic for review on button click
-
 export function StarReview({
   review,
   isNotReviable = true,
@@ -19,21 +17,18 @@ export function StarReview({
   const renderStars = () => {
     return Array.from({ length: MAX_STARS }, (_, index) => {
       const starValue = index + 1
+      const isFilled = review >= starValue
+      const StarIcon = <Star size={16} weight={isFilled ? 'fill' : 'regular'} />
 
-      if (review >= starValue) {
-        return (
-          <button key={index} disabled={isNotReviable}>
-            <Star size={16} weight="fill" />
-          </button>
-        )
-      }
-      return (
+      return isNotReviable ? (
+        <span key={index}>{StarIcon}</span>
+      ) : (
         <button key={index} disabled={isNotReviable}>
-          <Star size={16} weight="regular" />
+          {StarIcon}
         </button>
       )
     })
-  }
+  } // TODO ver como fazer com o button para quando for ser reviable sem dar erro de hidratation. e a logic for review no click do botao
 
   return <StarReviewContainer {...props}>{renderStars()}</StarReviewContainer>
 }
