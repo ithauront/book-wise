@@ -84,6 +84,9 @@ export const BookReview = styled('div', {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          '> div': {
+            maxWidth: '12rem',
+          },
 
           height: 'inherit',
           '> :last-child': {

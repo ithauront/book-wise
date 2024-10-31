@@ -9,7 +9,6 @@ import {
   AsideContainer,
 } from './styles'
 
-import BookCover from '../../../public/images/books/fragmentos-do-horror.png'
 import { useSession } from 'next-auth/react'
 import { BookBox } from '../../components/BookBox/BookBox.component'
 import { useEffect, useState } from 'react'
@@ -22,6 +21,8 @@ export default function Sart() {
   const [averageRatings, setAverageRatings] = useState<{
     [bookId: string]: number
   }>({})
+  const [showAllRatings, setShowAllRatings] = useState(false)
+  const [showAllTrending, setShowAllTrending] = useState(false)
 
   const user = session
     ? {
@@ -77,88 +78,86 @@ export default function Sart() {
         <MyBooks>
           <SessionTitle>
             <p>Adiçoes recentes</p>
-            <a>Ver todos &gt; </a>
+            <a onClick={() => setShowAllRatings(!showAllRatings)}>
+              {showAllRatings ? 'Ver menos' : 'Ver todos'} &gt;
+            </a>
           </SessionTitle>
-          {ratings.map((rating) => {
-            const {
-              user,
-              book,
-              rate,
-              description,
-              created_at: createdAt,
-            } = rating
+          {ratings
+            .slice(0, showAllRatings ? ratings.length : 5)
+            .map((rating) => {
+              const {
+                user,
+                book,
+                rate,
+                description,
+                created_at: createdAt,
+              } = rating
 
-            if (!book) {
-              console.error(
-                `Livro não encontrado para a avaliação com ID ${rating.id}`,
+              if (!book) {
+                console.error(
+                  `Livro não encontrado para a avaliação com ID ${rating.id}`,
+                )
+                return null
+              }
+
+              const headerProps = {
+                userName: user?.name || 'usuario',
+                reviewDate: new Date(createdAt).toLocaleDateString('pt-BR', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                }),
+                avatarSrc: user?.avatar_url || '',
+                reviewStarsFromUser: rate,
+              }
+
+              const averageRatingForBook = averageRatings[book.id] || 0
+              console.log(averageRatings, book)
+
+              return (
+                <BookBox
+                  headerProps={headerProps}
+                  key={rating.id}
+                  reviewText={description}
+                  bookCover={`/${book.cover_url}`}
+                  bookName={book.name}
+                  bookAuthor={book.author}
+                  reviewStarsTotal={averageRatingForBook}
+                />
               )
-              return null
-            }
-
-            const headerProps = {
-              userName: user?.name || 'usuario',
-              reviewDate: new Date(createdAt).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              }),
-              avatarSrc: user?.avatar_url || '',
-              reviewStarsFromUser: rate,
-            }
-
-            const averageRatingForBook = averageRatings[book.id] || 0
-            console.log(averageRatings, book)
-
-            return (
-              <BookBox
-                headerProps={headerProps}
-                key={rating.id}
-                reviewText={description}
-                bookCover={`/${book.cover_url}`}
-                bookName={book.name}
-                bookAuthor={book.author}
-                reviewStarsTotal={averageRatingForBook}
-              />
-            )
-          })}
+            })}
         </MyBooks>
       </MainContainer>
 
       <AsideContainer>
         <SessionTitle>
           <p>Livros populares</p>
-          <a>Ver todos &gt; </a>
+          <a onClick={() => setShowAllTrending(!showAllTrending)}>
+            {showAllTrending ? 'Ver menos' : 'Ver todos'} &gt;
+          </a>
         </SessionTitle>
         <TrendingBooks>
-          <BookBox
-            bookCover={BookCover.src}
-            bookAuthor="Junji Ito"
-            bookName="Fragmentos do horror"
-            reviewStarsTotal={4}
-            isSummary
-          />
-
-          <BookBox
-            bookCover={BookCover.src}
-            bookAuthor="Junji Ito"
-            bookName="Fragmentos do horror"
-            reviewStarsTotal={4}
-            isSummary
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookAuthor="Junji Ito"
-            bookName="Fragmentos do horror"
-            reviewStarsTotal={4}
-            isSummary
-          />
-          <BookBox
-            bookCover={BookCover.src}
-            bookAuthor="Junji Ito"
-            bookName="Fragmentos do horror"
-            reviewStarsTotal={4}
-            isSummary
-          />
+          {ratings
+            .sort((n1, n2) => n1.rate - n2.rate)
+            .slice(0, showAllTrending ? ratings.length : 5)
+            .map((ratingsSorted) => {
+              const { rate, id } = ratingsSorted
+              const {
+                cover_url: coverUrl,
+                name,
+                author,
+              } = ratingsSorted.book || {}
+              return (
+                <BookBox
+                  key={id}
+                  bookCover={coverUrl ? `/${coverUrl}` : ''}
+                  bookAuthor={author || ''}
+                  bookName={name || ''}
+                  reviewStarsTotal={rate}
+                  isSummary
+                />
+              )
+            })}
         </TrendingBooks>
       </AsideContainer>
     </StartContainer>
