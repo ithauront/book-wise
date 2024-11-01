@@ -11,25 +11,29 @@ import {
 
 import { useSession } from 'next-auth/react'
 import { BookBox } from '../../components/BookBox/BookBox.component'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { api } from '../../lib/axios'
 import { Rating } from '../types'
 
 export default function Sart() {
   const { data: session } = useSession()
   const [ratings, setRatings] = useState<Rating[]>([])
+  const [userRatings, setUserRatings] = useState<Rating[]>([])
   const [averageRatings, setAverageRatings] = useState<{
     [bookId: string]: number
   }>({})
   const [showAllRatings, setShowAllRatings] = useState(false)
   const [showAllTrending, setShowAllTrending] = useState(false)
+  const [showAllUserRatings, setShowAllUserRatings] = useState(false)
 
-  const user = session
-    ? {
-        name: session.user?.name || 'User',
-        avatar: session.user?.avatar_url || undefined,
-      }
-    : null
+  const user = useMemo(() => {
+    return session
+      ? {
+          name: session.user?.name || 'User',
+          avatar: session.user?.avatar_url || undefined,
+        }
+      : null
+  }, [session])
 
   useEffect(() => {
     const listRatings = async () => {
@@ -37,6 +41,13 @@ export default function Sart() {
         const response = await api.get('/list-ratings')
         const allRatings = response.data.allRatings
         setRatings(allRatings)
+
+        if (user) {
+          const userRatingsFiltered = allRatings.filter(
+            (rating: Rating) => rating.user?.name === user.name,
+          )
+          setUserRatings(userRatingsFiltered)
+        }
 
         const ratingsSums: {
           [bookId: string]: { sum: number; count: number }
@@ -64,7 +75,7 @@ export default function Sart() {
       }
     }
     listRatings()
-  }, [])
+  }, [user])
 
   return (
     <StartContainer>
@@ -75,6 +86,36 @@ export default function Sart() {
           <StyledChartLineUp size={32} />
           Início
         </p>
+        {user && (
+          <MyBooks>
+            <SessionTitle>
+              <p>
+                {showAllUserRatings
+                  ? 'Todas suas leituras'
+                  : 'Sua última leitura'}
+              </p>
+              <a onClick={() => setShowAllUserRatings(!showAllUserRatings)}>
+                {showAllUserRatings ? 'Ver menos' : 'Ver todas'} &gt;
+              </a>
+            </SessionTitle>
+            {userRatings.length === 0 ? (
+              <p>Você ainda não avaliou nenhum livro</p>
+            ) : (
+              userRatings
+                .slice(0, showAllUserRatings ? userRatings.length : 1)
+                .map((rating) => (
+                  <BookBox
+                    key={rating.id}
+                    bookName={rating.book?.name || ''}
+                    bookAuthor={rating.book?.author || ''}
+                    bookCover={`/${rating.book?.cover_url || ''}`}
+                    reviewStarsTotal={rating.rate}
+                    reviewText={rating.description}
+                  />
+                ))
+            )}
+          </MyBooks>
+        )}
         <MyBooks>
           <SessionTitle>
             <p>Adiçoes recentes</p>
@@ -83,7 +124,7 @@ export default function Sart() {
             </a>
           </SessionTitle>
           {ratings
-            .slice(0, showAllRatings ? ratings.length : 5)
+            .slice(0, showAllRatings ? ratings.length : 4)
             .map((rating) => {
               const {
                 user,
@@ -138,8 +179,8 @@ export default function Sart() {
         </SessionTitle>
         <TrendingBooks>
           {ratings
-            .sort((n1, n2) => n1.rate - n2.rate)
-            .slice(0, showAllTrending ? ratings.length : 5)
+            .sort((a, b) => a.rate - b.rate)
+            .slice(0, showAllTrending ? ratings.length : 4)
             .map((ratingsSorted) => {
               const { rate, id } = ratingsSorted
               const {
