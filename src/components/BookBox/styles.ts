@@ -5,6 +5,17 @@ export const BookBoxContainer = styled(Box, {
   padding: '$6',
   gap: '$8',
   minWidth: '20rem',
+  variants: {
+    isUserReview: {
+      true: {
+        background: '$gray-600',
+      },
+      false: {},
+    },
+  },
+  defaultVariants: {
+    isUserReview: false,
+  },
 })
 
 export const BookBoxHeader = styled('div', {
@@ -96,6 +107,12 @@ export const BookReview = styled('div', {
       },
       false: {},
     },
+    isUserReview: {
+      true: {
+        background: '$gray-600',
+      },
+      false: {},
+    },
     isExplore: {
       true: {
         '> :first-child': {
@@ -126,5 +143,6 @@ export const BookReview = styled('div', {
   defaultVariants: {
     isSummary: false,
     isExplore: false,
+    isUserReview: false,
   },
 })

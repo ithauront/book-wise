@@ -14,8 +14,13 @@ import { BookBox } from '../../components/BookBox/BookBox.component'
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../../lib/axios'
 import { Rating } from '../types'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/pt-br'
 
 export default function Sart() {
+  dayjs.extend(relativeTime)
+  dayjs.locale('pt-br')
   const { data: session } = useSession()
   const [ratings, setRatings] = useState<Rating[]>([])
   const [userRatings, setUserRatings] = useState<Rating[]>([])
@@ -26,6 +31,7 @@ export default function Sart() {
   const [showAllTrending, setShowAllTrending] = useState(false)
   const [showAllUserRatings, setShowAllUserRatings] = useState(false)
 
+  // TODO fazer a estilização correta do bookbox com a variavel para quando é leitura do usuario
   const user = useMemo(() => {
     return session
       ? {
@@ -77,6 +83,9 @@ export default function Sart() {
     listRatings()
   }, [user])
 
+  const formattedDate = (dateString: string | Date) =>
+    dayjs(dateString).fromNow()
+
   return (
     <StartContainer>
       <Sidebar isLoggedIn={!!session} user={user} />
@@ -111,6 +120,8 @@ export default function Sart() {
                     bookCover={`/${rating.book?.cover_url || ''}`}
                     reviewStarsTotal={rating.rate}
                     reviewText={rating.description}
+                    reviewDate={formattedDate(rating.created_at)}
+                    isUserReview
                   />
                 ))
             )}
@@ -143,11 +154,7 @@ export default function Sart() {
 
               const headerProps = {
                 userName: user?.name || 'usuario',
-                reviewDate: new Date(createdAt).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                }),
+
                 avatarSrc: user?.avatar_url || '',
                 reviewStarsFromUser: rate,
               }
@@ -164,6 +171,7 @@ export default function Sart() {
                   bookName={book.name}
                   bookAuthor={book.author}
                   reviewStarsTotal={averageRatingForBook}
+                  reviewDate={formattedDate(createdAt)}
                 />
               )
             })}
