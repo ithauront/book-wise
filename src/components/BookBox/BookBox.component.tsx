@@ -69,7 +69,11 @@ export function BookBox({
             <p>{bookAuthor}</p>
           </div>
           <p>{reviewText || ''}</p>
-          {isExplore ? <StarReview review={reviewStarsTotal} /> : ''}
+          {isExplore || isSummary ? (
+            <StarReview review={reviewStarsTotal} />
+          ) : (
+            ''
+          )}
         </section>
       </BookReview>
     </BookBoxContainer>
