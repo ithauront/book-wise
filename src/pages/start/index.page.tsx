@@ -31,7 +31,6 @@ export default function Sart() {
   const [showAllTrending, setShowAllTrending] = useState(false)
   const [showAllUserRatings, setShowAllUserRatings] = useState(false)
 
-  // TODO fazer a estilização correta do bookbox com a variavel para quando é leitura do usuario
   const user = useMemo(() => {
     return session
       ? {
@@ -88,6 +87,26 @@ export default function Sart() {
     return relativeTime.charAt(0).toUpperCase() + relativeTime.slice(1)
   }
 
+  const uniqueRatings = Object.values(
+    ratings.reduce<Record<string, Rating>>((acc, rating) => {
+      if (rating.book && !acc[rating.book.id]) {
+        acc[rating.book.id] = rating
+      }
+      return acc
+    }, {}),
+  )
+
+  const filteredRatings = uniqueRatings as Rating[]
+
+  const sortedRecentRatings = [...ratings].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  )
+
+  const sortedTrendingRatings = [...filteredRatings].sort(
+    (a, b) => b.rate - a.rate,
+  )
+
   return (
     <StartContainer>
       <Sidebar isLoggedIn={!!session} user={user} />
@@ -136,7 +155,7 @@ export default function Sart() {
               {showAllRatings ? 'Ver menos' : 'Ver todos'} &gt;
             </a>
           </SessionTitle>
-          {ratings
+          {sortedRecentRatings
             .slice(0, showAllRatings ? ratings.length : 4)
             .map((rating) => {
               const {
@@ -188,8 +207,7 @@ export default function Sart() {
           </a>
         </SessionTitle>
         <TrendingBooks>
-          {ratings
-            .sort((a, b) => a.rate - b.rate)
+          {sortedTrendingRatings
             .slice(0, showAllTrending ? ratings.length : 4)
             .map((ratingsSorted) => {
               const { rate, id } = ratingsSorted
