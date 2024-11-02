@@ -83,8 +83,10 @@ export default function Sart() {
     listRatings()
   }, [user])
 
-  const formattedDate = (dateString: string | Date) =>
-    dayjs(dateString).fromNow()
+  const formattedDate = (dateString: string | Date) => {
+    const relativeTime = dayjs(dateString).fromNow()
+    return relativeTime.charAt(0).toUpperCase() + relativeTime.slice(1)
+  }
 
   return (
     <StartContainer>
