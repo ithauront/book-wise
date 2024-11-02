@@ -57,7 +57,7 @@ export function BookBox({
         <Image src={bookCover} alt="Book cover" width={150} height={200} />
         <section>
           {isUserReview ? (
-            <div>
+            <div className="isUserReviewHeaderDiv">
               <p>{reviewDate}</p>
               <StarReview review={reviewStarsTotal} />
             </div>
@@ -69,7 +69,7 @@ export function BookBox({
             <p>{bookAuthor}</p>
           </div>
           <p>{reviewText || ''}</p>
-          {isUserReview ? '' : <StarReview review={reviewStarsTotal} />}
+          {isExplore ? <StarReview review={reviewStarsTotal} /> : ''}
         </section>
       </BookReview>
     </BookBoxContainer>

@@ -110,6 +110,23 @@ export const BookReview = styled('div', {
     isUserReview: {
       true: {
         background: '$gray-600',
+        section: {
+          display: 'flex',
+
+          '.isUserReviewHeaderDiv': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '24rem',
+            '> :last-child': {
+              display: 'inline',
+            },
+          },
+
+          height: 'inherit',
+          '> :last-child': {
+            display: 'inline',
+          },
+        },
       },
       false: {},
     },
