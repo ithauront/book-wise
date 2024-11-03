@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { Avatar } from '../Avatar/Avatar.component'
 import { useState } from 'react'
 import { Modal } from '../Modal/Modal.component'
+import { signOut } from 'next-auth/react'
 
 interface User {
   name: string | null
@@ -26,7 +27,7 @@ interface SidebarProps {
 export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
-  const currentPath = router.pathname // TODO Verify once the pages are done if route and variant on navigation is working
+  const currentPath = router.pathname
 
   const handleOpenModal = () => {
     setIsModalOpen(true)
@@ -35,7 +36,10 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
   const handleCloseModal = () => {
     setIsModalOpen(false)
   }
-  console.log(user)
+  const handleLogout = () => {
+    signOut()
+  }
+
   return (
     <>
       <SidebarContainer>
@@ -68,7 +72,7 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
 
         {isLoggedIn ? (
           <div>
-            <LoginButton onClick={handleOpenModal}>
+            <LoginButton onClick={handleLogout}>
               <Avatar size="sm" src={user?.avatar} alt="Avatar do usuário" />
               <p>{user?.name}</p>
 
