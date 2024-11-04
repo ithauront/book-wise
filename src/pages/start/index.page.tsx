@@ -181,7 +181,6 @@ export default function Sart() {
               }
 
               const averageRatingForBook = averageRatings[book.id] || 0
-              console.log(averageRatings, book)
 
               return (
                 <BookBox
