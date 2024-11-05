@@ -1,8 +1,8 @@
 import { signIn } from 'next-auth/react'
 import { SignInButton, SignInEnterprise } from '../SignInButton/SignInButton'
 import { Portal } from '../Portal/Portal.component'
-import { ButtonContainer, CloseButton, ModalContent, Overlay } from './styles'
-import { X } from 'phosphor-react'
+import { ButtonContainer, ModalContent, Overlay } from './styles'
+import { CloseButton } from '../CloseButton/CloseButton.components'
 
 interface ModalProps {
   isOpen: boolean
@@ -18,9 +18,7 @@ export function Modal({ isForReview = false, isOpen, onClose }: ModalProps) {
     <Portal>
       <Overlay onClick={onClose}>
         <ModalContent onClick={(e) => e.stopPropagation()}>
-          <CloseButton onClick={onClose}>
-            <X size={24} />
-          </CloseButton>
+          <CloseButton onClose={onClose} size={24} />
           <p>{`Faça login ${isForReview ? 'para deixar sua avaliação' : ''}`}</p>
           <ButtonContainer>
             <SignInButton

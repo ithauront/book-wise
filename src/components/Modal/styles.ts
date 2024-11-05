@@ -37,10 +37,3 @@ export const ButtonContainer = styled('div', {
   marginTop: '2rem',
   gap: '1rem',
 })
-
-export const CloseButton = styled('button', {
-  all: 'unset',
-  marginLeft: 'auto',
-
-  cursor: 'pointer',
-})
