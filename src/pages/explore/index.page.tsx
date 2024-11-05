@@ -19,6 +19,7 @@ export default function Explore() {
   const { data: session } = useSession()
   const [selectedTopics, setSelectedTopics] = useState<string[]>(['Todos'])
   const [books, setBooks] = useState<Book[]>([])
+  const [searchTerm, setSearchTerm] = useState<string>('')
 
   useEffect(() => {
     const listBooks = async () => {
@@ -45,6 +46,7 @@ export default function Explore() {
   ]
 
   const handleTopicClick = (topic: string) => {
+    setSearchTerm('')
     if (topic === 'Todos') {
       setSelectedTopics(['Todos'])
     } else {
@@ -56,13 +58,25 @@ export default function Explore() {
     }
   }
 
-  const filtredBooks = selectedTopics.includes('Todos')
-    ? books
-    : books.filter((book) =>
-        book.categories?.some((cat) =>
-          selectedTopics.includes(cat.category.name || ''),
-        ),
+  const handleSearchSubmit = (data: { search: string }) => {
+    setSearchTerm(data.search)
+    setSelectedTopics(['Todos'])
+  }
+
+  const filtredBooks = books.filter((book) => {
+    const matchesTopic =
+      selectedTopics.includes('Todos') ||
+      book.categories?.some((cat) =>
+        selectedTopics.includes(cat.category.name || ''),
       )
+
+    const matchesSearchTerm =
+      searchTerm === '' ||
+      book.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
+
+    return matchesTopic && matchesSearchTerm
+  })
 
   const user = session
     ? {
@@ -83,7 +97,7 @@ export default function Explore() {
           </p>
           <SearchBar
             placeholder="Buscar livro ou autor"
-            onSubmit={() => console.log('buscado')}
+            onSubmit={handleSearchSubmit}
           />
         </TitleContainer>
         <SearchTopicsContainer>
