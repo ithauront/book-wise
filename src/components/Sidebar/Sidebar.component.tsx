@@ -61,7 +61,7 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
               <p>Explorar</p>
             </NavItem>
             <NavItem
-              onClick={() => router.push('/perfil')}
+              onClick={() => router.push('/profile')}
               selected={currentPath === '/perfil'}
             >
               <User size={24} />
