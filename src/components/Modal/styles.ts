@@ -11,6 +11,7 @@ export const Overlay = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  overflowY: 'auto',
 })
 
 export const ModalContent = styled(Box, {

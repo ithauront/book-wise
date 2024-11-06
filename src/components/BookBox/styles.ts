@@ -132,6 +132,9 @@ export const BookReview = styled('div', {
     },
     isExplore: {
       true: {
+        '&:hover': {
+          cursor: 'pointer',
+        }, // TODO por enquanto deixa o pointer aqui. talvez depois colocar em outros lugares se outros modos tambem forem clicaveis.
         '> :first-child': {
           width: '6.75rem',
           height: '9.5rem',

@@ -21,6 +21,7 @@ export interface BookBoxProps {
   isSummary?: boolean
   isExplore?: boolean
   isUserReview?: boolean
+  openBookInfo?: () => void
 }
 
 export function BookBox({
@@ -34,9 +35,10 @@ export function BookBox({
   isSummary = false,
   isExplore = false,
   isUserReview = false,
+  openBookInfo,
 }: BookBoxProps) {
   return (
-    <BookBoxContainer isUserReview={isUserReview}>
+    <BookBoxContainer isUserReview={isUserReview} onClick={openBookInfo}>
       {headerProps ? (
         <BookBoxHeader>
           <Avatar src={headerProps.avatarSrc} />
