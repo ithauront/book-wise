@@ -22,7 +22,20 @@ export default async function handle(
 ) {
   const allBooks = await prisma.book.findMany({
     include: {
-      ratings: true,
+      ratings: {
+        select: {
+          id: true,
+          rate: true,
+          description: true,
+          created_at: true,
+          user: {
+            select: {
+              name: true,
+              avatar_url: true,
+            },
+          },
+        },
+      },
       categories: {
         select: {
           category: true,
