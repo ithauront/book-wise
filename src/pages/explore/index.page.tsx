@@ -14,17 +14,30 @@ import { SearchTopic } from '../../components/SearchTopics/SearchTopics.componen
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
 import { Book } from '../types'
+import { BookDetails } from '../../components/BookDetails/BookDetails.component'
 
 export default function Explore() {
   const { data: session } = useSession()
   const [selectedTopics, setSelectedTopics] = useState<string[]>(['Todos'])
   const [books, setBooks] = useState<Book[]>([])
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const [isBookInfoOpen, setIsBookInfoOpen] = useState(false)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+
+  const handleBookBoxClick = (book: Book) => {
+    setSelectedBook(book)
+    setIsBookInfoOpen(true)
+  }
+
+  const handleBookInfoBox = () => {
+    setIsBookInfoOpen(false)
+  }
 
   useEffect(() => {
     const listBooks = async () => {
       try {
         const response = await api.get('/list-books')
+        console.log('Books data from API:', response.data.allBooks)
         setBooks(response.data.allBooks)
       } catch (error) {
         console.error('Error fetching books:', error)
@@ -84,52 +97,91 @@ export default function Explore() {
         avatar: session.user?.image || undefined,
       }
     : null
-
+  // TODO ver se não podemos verificar com os cookies o usuario e pegar o name e o avatar direto no banco de dados
   return (
-    <ExploreContainer>
-      <Sidebar isLoggedIn={!!session} user={user} />
+    <>
+      <ExploreContainer>
+        <Sidebar isLoggedIn={!!session} user={user} />
 
-      <MainContainer>
-        <TitleContainer>
-          <p>
-            <StyledBinocular size={32} />
-            Explorar
-          </p>
-          <SearchBar
-            placeholder="Buscar livro ou autor"
-            onSubmit={handleSearchSubmit}
-          />
-        </TitleContainer>
-        <SearchTopicsContainer>
-          {topics.map((topic) => (
-            <SearchTopic
-              key={topic}
-              content={topic}
-              isSelected={selectedTopics.includes(topic)}
-              onClick={() => handleTopicClick(topic)}
+        <MainContainer>
+          <TitleContainer>
+            <p>
+              <StyledBinocular size={32} />
+              Explorar
+            </p>
+            <SearchBar
+              placeholder="Buscar livro ou autor"
+              onSubmit={handleSearchSubmit}
             />
-          ))}
-        </SearchTopicsContainer>
-
-        <ExploreContent>
-          {filtredBooks.map((book) => {
-            const averageRatings = book.ratings?.length
-              ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
-                book.ratings.length
-              : 0
-            return (
-              <BookBox
-                key={book.id}
-                bookCover={`/${book.cover_url}`}
-                bookName={book.name}
-                bookAuthor={book.author}
-                reviewStarsTotal={averageRatings}
-                isExplore
+          </TitleContainer>
+          <SearchTopicsContainer>
+            {topics.map((topic) => (
+              <SearchTopic
+                key={topic}
+                content={topic}
+                isSelected={selectedTopics.includes(topic)}
+                onClick={() => handleTopicClick(topic)}
               />
-            )
-          })}
-        </ExploreContent>
-      </MainContainer>
-    </ExploreContainer>
+            ))}
+          </SearchTopicsContainer>
+
+          <ExploreContent>
+            {filtredBooks.map((book) => {
+              const averageRatings = book.ratings?.length
+                ? book.ratings.reduce((sum, rating) => sum + rating.rate, 0) /
+                  book.ratings.length
+                : 0
+
+              const bookDetails = {
+                cover: `/${book.cover_url}`,
+                name: book.name,
+                author: book.author,
+                rate: averageRatings,
+                categories: (book.categories || []).map((cat) => ({
+                  name: cat.category.name,
+                  id: cat.category.id,
+                })),
+                totalPages: book.total_pages || 0,
+              }
+
+              const ratings = (book.ratings || []).map((rating) => ({
+                userName: rating.user?.name || 'Anônimo',
+                userAvatar: rating.user?.avatar_url || '',
+                rate: rating.rate.toString(),
+                description: rating.description || '',
+                createdAt: new Date(rating.created_at).toLocaleDateString(
+                  'pt-BR',
+                  {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  },
+                ),
+              }))
+
+              return (
+                <>
+                  <BookBox
+                    key={book.id}
+                    bookCover={`/${book.cover_url}`}
+                    bookName={book.name}
+                    bookAuthor={book.author}
+                    reviewStarsTotal={averageRatings}
+                    isExplore
+                    openBookInfo={() => handleBookBoxClick(book)}
+                  />
+                  <BookDetails
+                    isOpen={isBookInfoOpen && selectedBook?.id === book.id}
+                    onClose={handleBookInfoBox}
+                    book={bookDetails}
+                    ratings={ratings}
+                  />
+                </>
+              )
+            })}
+          </ExploreContent>
+        </MainContainer>
+      </ExploreContainer>
+    </>
   )
 }
