@@ -15,7 +15,9 @@ import { BookBoxHeader } from '../BookBox/styles'
 import { Avatar } from '../Avatar/Avatar.component'
 import { Portal } from '../Portal/Portal.component'
 import { Overlay } from '../Modal/styles'
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { TextInput } from '../TextInput/TextInput.component'
 
 type Category = {
   name: string
@@ -52,7 +54,18 @@ export function BookDetails({
   onClose,
   isOpen,
 }: BookDetailsProps) {
+  const { data: session } = useSession()
+  const [openReview, setOpenReview] = useState(false)
   const categoryNames = book.categories.map((cat) => cat.name).join(', ')
+
+  const user = useMemo(() => {
+    return session
+      ? {
+          name: session.user?.name || 'User',
+          avatar: session.user?.avatar_url || undefined,
+        }
+      : null
+  }, [session])
 
   useEffect(() => {
     if (isOpen) {
@@ -70,12 +83,20 @@ export function BookDetails({
     return null
   }
 
-  // TODO fazer condicional para se length de avaliações for igual a 1 colocar avaliação no singular se não deixar no plural
+  const handleReviewClick = () => {
+    setOpenReview(true)
+    console.log(openReview)
+  }
+
+  const handleComment = () => {
+    console.log('hello')
+  }
+
   // TODO fazer a parte de adicionar avaliação tanto visual quando a logica
   return (
     <Portal>
       <Overlay onClick={onClose}>
-        <BookDetailsContainer>
+        <BookDetailsContainer onClick={(e) => e.stopPropagation()}>
           <CloseButton size={24} onClose={onClose} />
           <BookInfoContainer>
             <BookInfoMain>
@@ -92,7 +113,12 @@ export function BookDetails({
                 </div>
                 <div>
                   <StarReview review={book.rate} />
-                  <p>{ratings.length} avaliações</p>
+
+                  <p>
+                    {ratings.length === 1
+                      ? 'Uma avaliação'
+                      : `${ratings.length} avaliações`}
+                  </p>
                 </div>
               </div>
             </BookInfoMain>
@@ -115,9 +141,22 @@ export function BookDetails({
           </BookInfoContainer>
           <CommentsHeader>
             <p>Avaliações</p>
-            <button>Avaliar</button>
+            <button onClick={handleReviewClick}>Avaliar</button>
           </CommentsHeader>
-
+          {openReview && (
+            <CommentBoxesContainer>
+              <BookBoxHeader>
+                <Avatar src={user?.avatar} />
+                <div>
+                  <h3>{user?.name}</h3>
+                </div>
+              </BookBoxHeader>
+              <TextInput
+                placeholder="Digite seu comentario"
+                onSubmit={handleComment}
+              />
+            </CommentBoxesContainer>
+          )}
           <CommentBoxesContainer>
             {ratings.map((rate) => {
               return (

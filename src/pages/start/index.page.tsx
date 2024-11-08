@@ -39,7 +39,7 @@ export default function Sart() {
         }
       : null
   }, [session])
-
+  // TODO nessa pagina ele pega a avatar. talvez por conta do useMemo. acho que a ideia é usar o serversideprops e se tiver sessão a gente pega tudo do banco de dados.
   useEffect(() => {
     const listRatings = async () => {
       try {
