@@ -93,6 +93,7 @@ export function BookDetails({
   }
 
   // TODO fazer a parte de adicionar avaliação tanto visual quando a logica
+  // TODO fazer a logica e estilizaçao do starReview quando ele é reviable
   return (
     <Portal>
       <Overlay onClick={onClose}>
@@ -145,16 +146,19 @@ export function BookDetails({
           </CommentsHeader>
           {openReview && (
             <CommentBoxesContainer>
-              <BookBoxHeader>
-                <Avatar src={user?.avatar} />
-                <div>
-                  <h3>{user?.name}</h3>
-                </div>
-              </BookBoxHeader>
-              <TextInput
-                placeholder="Digite seu comentario"
-                onSubmit={handleComment}
-              />
+              <CommentBox>
+                <BookBoxHeader>
+                  <Avatar src={user?.avatar} />
+                  <div>
+                    <h3>{user?.name}</h3>
+                  </div>
+                  <StarReview isNotReviable={false} review={0} />
+                </BookBoxHeader>
+                <TextInput
+                  placeholder="Digite seu comentario"
+                  onSubmit={handleComment}
+                />
+              </CommentBox>
             </CommentBoxesContainer>
           )}
           <CommentBoxesContainer>

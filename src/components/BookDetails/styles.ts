@@ -1,7 +1,6 @@
 import { styled } from '../../stitches.config'
 
 export const BookDetailsContainer = styled('div', {
-  height: '100vh',
   width: '41.25rem',
 
   display: 'flex',
@@ -107,7 +106,6 @@ export const CommentBox = styled('div', {
   gap: '$4',
 
   width: '35.25rem',
-  height: '13rem',
   padding: '$6',
   background: '$gray-700',
   borderRadius: '$md',
