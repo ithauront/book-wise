@@ -109,7 +109,7 @@ export function BookDetails({
   // TODO fazer a logica e estilizaçao do starReview quando ele é reviable
   return (
     <Portal>
-      <Overlay onClick={onClose}>
+      <Overlay bookDetails onClick={onClose}>
         <BookDetailsContainer onClick={(e) => e.stopPropagation()}>
           <CloseButton size={24} onClose={onClose} />
           <BookInfoContainer>

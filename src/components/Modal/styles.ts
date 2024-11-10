@@ -12,6 +12,15 @@ export const Overlay = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
   overflowY: 'auto',
+
+  variants: {
+    bookDetails: {
+      true: {
+        alignItems: 'flex-start',
+      },
+      false: {},
+    },
+  },
 })
 
 export const ModalContent = styled(Box, {
