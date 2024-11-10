@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
 import { Book } from '../types'
 import { BookDetails } from '../../components/BookDetails/BookDetails.component'
+import dayjs from 'dayjs'
 
 export default function Explore() {
   const { data: session } = useSession()
@@ -149,14 +150,7 @@ export default function Explore() {
                 userAvatar: rating.user?.avatar_url || '',
                 rate: rating.rate.toString(),
                 description: rating.description || '',
-                createdAt: new Date(rating.created_at).toLocaleDateString(
-                  'pt-BR',
-                  {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                  },
-                ),
+                createdAt: dayjs(rating.created_at),
               }))
 
               return (

@@ -18,6 +18,9 @@ import { Overlay } from '../Modal/styles'
 import { useEffect, useMemo, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { TextInput } from '../TextInput/TextInput.component'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/pt-br'
 
 type Category = {
   name: string
@@ -38,7 +41,7 @@ type Rate = {
   userAvatar: string
   rate: string
   description: string
-  createdAt: string
+  createdAt: dayjs.Dayjs
 }
 
 interface BookDetailsProps {
@@ -54,6 +57,7 @@ export function BookDetails({
   onClose,
   isOpen,
 }: BookDetailsProps) {
+  dayjs.extend(relativeTime).locale('pt-BR')
   const { data: session } = useSession()
   const [openReview, setOpenReview] = useState(false)
   const categoryNames = book.categories.map((cat) => cat.name).join(', ')
@@ -83,6 +87,10 @@ export function BookDetails({
     return null
   }
 
+  const sortedRecentRatings = [...ratings].sort((a, b) =>
+    b.createdAt.diff(a.createdAt),
+  )
+
   const handleReviewClick = () => {
     setOpenReview(true)
     console.log(openReview)
@@ -90,9 +98,14 @@ export function BookDetails({
 
   const handleComment = () => {
     console.log('hello')
+    setOpenReview(false) // para lembrar que apos ele dar o post no comentario ele vai fechar a parte de comentario e o que vai ser renderizado é o novo comentario.
   }
 
-  // TODO fazer a parte de adicionar avaliação tanto visual quando a logica
+  const handleCloseReview = () => {
+    setOpenReview(false)
+  }
+
+  // TODO fazer a parte de adicionar avaliação logica
   // TODO fazer a logica e estilizaçao do starReview quando ele é reviable
   return (
     <Portal>
@@ -157,20 +170,21 @@ export function BookDetails({
                 <TextInput
                   placeholder="Digite seu comentario"
                   onSubmit={handleComment}
+                  onClose={handleCloseReview}
                 />
               </CommentBox>
             </CommentBoxesContainer>
           )}
           <CommentBoxesContainer>
-            {ratings.map((rate) => {
+            {sortedRecentRatings.map((rate) => {
               return (
-                <CommentBox key={rate.createdAt}>
+                <CommentBox key={rate.createdAt.toString()}>
                   <BookBoxHeader>
                     <Avatar src={rate.userAvatar} />
 
                     <div>
                       <h3>{rate.userName}</h3>
-                      <p>{rate.createdAt}</p>
+                      <p>{rate.createdAt.fromNow()}</p>
                     </div>
 
                     <StarReview review={4} />
