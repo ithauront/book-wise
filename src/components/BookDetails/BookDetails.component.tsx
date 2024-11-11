@@ -21,6 +21,7 @@ import { TextInput } from '../TextInput/TextInput.component'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
+import { Modal } from '../Modal/Modal.component'
 
 type Category = {
   name: string
@@ -60,6 +61,7 @@ export function BookDetails({
   dayjs.extend(relativeTime).locale('pt-BR')
   const { data: session } = useSession()
   const [openReview, setOpenReview] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const categoryNames = book.categories.map((cat) => cat.name).join(', ')
 
   const user = useMemo(() => {
@@ -92,13 +94,16 @@ export function BookDetails({
   )
 
   const handleReviewClick = () => {
-    setOpenReview(true)
-    console.log(openReview)
+    if (!user) {
+      setIsLoginModalOpen(true)
+    } else {
+      setOpenReview(true)
+    }
   }
 
-  const handleComment = () => {
-    console.log('hello')
-    setOpenReview(false) // para lembrar que apos ele dar o post no comentario ele vai fechar a parte de comentario e o que vai ser renderizado é o novo comentario.
+  const handleComment = (data: { comment: string }) => {
+    console.log('Comentário recebido:', data.comment)
+    setOpenReview(false)
   }
 
   const handleCloseReview = () => {
@@ -156,6 +161,11 @@ export function BookDetails({
           <CommentsHeader>
             <p>Avaliações</p>
             <button onClick={handleReviewClick}>Avaliar</button>
+            <Modal
+              isOpen={isLoginModalOpen}
+              onClose={() => setIsLoginModalOpen(false)}
+              isForReview={true}
+            />
           </CommentsHeader>
           {openReview && (
             <CommentBoxesContainer>

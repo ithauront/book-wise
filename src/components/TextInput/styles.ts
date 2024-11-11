@@ -67,6 +67,11 @@ export const IconButton = styled('button', {
     background: '$gray-400',
   },
 
+  '&:disabled': {
+    background: '$gray-300',
+    cursor: 'not-allowed',
+  },
+
   variants: {
     variant: {
       cancel: {

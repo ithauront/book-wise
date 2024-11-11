@@ -13,10 +13,14 @@ interface TextInputProps {
   onSubmit: (data: { comment: string }) => void
   onClose: () => void
 }
-// TODO no issubmiting desabilitar o butão de envio. apos submitar talvez dar uma msg de seu comentario foi bem registrado. e fechar a aba de comentario. ou apenas fechar a aba e ostrar o comentario novo na lista.
 
 export function TextInput({ onSubmit, placeholder, onClose }: TextInputProps) {
-  const { register, handleSubmit, watch } = useForm<{ comment: string }>()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<{ comment: string }>()
   const commentValue = watch('comment') || ''
   return (
     <ContainerForm onSubmit={handleSubmit(onSubmit)}>
@@ -30,7 +34,7 @@ export function TextInput({ onSubmit, placeholder, onClose }: TextInputProps) {
         <IconButton onClick={onClose}>
           <X size={24} />
         </IconButton>
-        <IconButton variant="submit" type="submit">
+        <IconButton variant="submit" type="submit" disabled={isSubmitting}>
           <Check size={24} />
         </IconButton>
       </ButtonsContainer>
