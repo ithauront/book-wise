@@ -64,6 +64,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, user }) {
       session.user = {
         ...session.user,
+        id: user.id,
         avatar_url: user.avatar_url,
       }
       return session
