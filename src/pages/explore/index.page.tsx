@@ -134,6 +134,7 @@ export default function Explore() {
                 : 0
 
               const bookDetails = {
+                id: book.id,
                 cover: `/${book.cover_url}`,
                 name: book.name,
                 author: book.author,
