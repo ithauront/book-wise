@@ -22,38 +22,11 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
 import { Modal } from '../Modal/Modal.component'
-
-type Category = {
-  name: string
-  id: string
-}
-
-type BookProps = {
-  cover: string
-  name: string
-  author: string
-  rate: number
-  categories: Category[]
-  totalPages: number
-}
-
-type Rate = {
-  userName: string
-  userAvatar: string
-  rate: string
-  description: string
-  createdAt: dayjs.Dayjs
-}
-
-interface BookDetailsProps {
-  isOpen: boolean
-  onClose: () => void
-  book: BookProps
-  ratings: Rate[]
-}
+import { api } from '../../lib/axios'
+import { BookDetailsProps, Rate, RatingResponse } from './BookDetails.types'
 
 export function BookDetails({
-  ratings,
+  ratings: initialRatings,
   book,
   onClose,
   isOpen,
@@ -62,6 +35,8 @@ export function BookDetails({
   const { data: session } = useSession()
   const [openReview, setOpenReview] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const [ratings, setRatings] = useState<Rate[]>(initialRatings)
+
   const categoryNames = book.categories.map((cat) => cat.name).join(', ')
 
   const user = useMemo(() => {
@@ -89,9 +64,49 @@ export function BookDetails({
     return null
   }
 
-  const sortedRecentRatings = [...ratings].sort((a, b) =>
-    b.createdAt.diff(a.createdAt),
-  )
+  const fetchRatings = async () => {
+    try {
+      const response = await api.get<RatingResponse[]>(
+        `/get-ratings/${book.id}`,
+      )
+      setRatings(
+        response.data.map((rating) => ({
+          userName: rating.user?.name || 'Anônimo',
+          userAvatar: rating.user?.avatar_url || '',
+          rate: rating.rate.toString(),
+          description: rating.description || '',
+          createdAt: dayjs(rating.created_at),
+        })),
+      )
+    } catch (error) {
+      console.error('Erro ao buscar avaliações:', error)
+    }
+  }
+
+  const handlePostRating = async (data: { comment: string }) => {
+    if (!session) {
+      console.error('Usuário não autenticado')
+      return
+    }
+
+    try {
+      await api.post('/post-rating', {
+        rating: {
+          rate: 4, // TODO pegar o rating correto
+          description: data.comment,
+          book_id: book.id,
+        },
+      })
+      await fetchRatings()
+      setOpenReview(false)
+    } catch (error) {
+      console.error('Erro ao postar comentário:', error)
+    }
+  }
+
+  const handleCloseReview = () => {
+    setOpenReview(false)
+  }
 
   const handleReviewClick = () => {
     if (!user) {
@@ -101,16 +116,10 @@ export function BookDetails({
     }
   }
 
-  const handleComment = (data: { comment: string }) => {
-    console.log('Comentário recebido:', data.comment)
-    setOpenReview(false)
-  }
+  const sortedRecentRatings = [...ratings].sort((a, b) =>
+    b.createdAt.diff(a.createdAt),
+  )
 
-  const handleCloseReview = () => {
-    setOpenReview(false)
-  }
-
-  // TODO fazer a parte de adicionar avaliação logica
   // TODO fazer a logica e estilizaçao do starReview quando ele é reviable
   return (
     <Portal>
@@ -179,7 +188,7 @@ export function BookDetails({
                 </BookBoxHeader>
                 <TextInput
                   placeholder="Digite seu comentario"
-                  onSubmit={handleComment}
+                  onSubmit={handlePostRating}
                   onClose={handleCloseReview}
                 />
               </CommentBox>
