@@ -149,7 +149,7 @@ export default function Explore() {
               const ratings = (book.ratings || []).map((rating) => ({
                 userName: rating.user?.name || 'Anônimo',
                 userAvatar: rating.user?.avatar_url || '',
-                rate: rating.rate.toString(),
+                rate: rating.rate,
                 description: rating.description || '',
                 createdAt: dayjs(rating.created_at),
               }))

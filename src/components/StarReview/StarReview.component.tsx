@@ -1,36 +1,52 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { StarReviewContainer } from './styles'
 import { Star } from 'phosphor-react'
 
 interface StarReviewProps extends ComponentProps<typeof StarReviewContainer> {
-  review: number
+  review?: number
   isNotReviable?: boolean
+  onRatingChange?: (rating: number) => void
 }
 
 export function StarReview({
-  review,
+  review = 0,
   isNotReviable = true,
+  onRatingChange,
   ...props
 }: StarReviewProps) {
+  const [rating, setRating] = useState(review)
   const MAX_STARS = 5
 
+  const handleRating = (index: number) => {
+    const adjustRating = index + 1
+    setRating(adjustRating)
+    if (onRatingChange) {
+      onRatingChange(adjustRating)
+    }
+  }
   const renderStars = () => {
     return Array.from({ length: MAX_STARS }, (_, index) => {
       const starValue = index + 1
-      const isFilled = review >= starValue
-      const StarIcon = <Star size={16} weight={isFilled ? 'fill' : 'regular'} />
+      const isFilled = rating >= starValue
+      const StarIcon = (
+        <Star
+          size={isNotReviable ? 16 : 28}
+          weight={isFilled ? 'fill' : 'regular'}
+        />
+      )
 
       return isNotReviable ? (
         <span key={index}>{StarIcon}</span>
       ) : (
-        <button key={index} disabled={isNotReviable}>
+        <button
+          key={index}
+          disabled={isNotReviable}
+          onClick={() => handleRating(index)}
+        >
           {StarIcon}
         </button>
       )
     })
-  } // TODO ver como fazer com o button para quando for ser reviable sem dar erro de hidratation. e a logic for review no click do botao
-
+  }
   return <StarReviewContainer {...props}>{renderStars()}</StarReviewContainer>
 }
-
-StarReview.displayName = 'StarReview'

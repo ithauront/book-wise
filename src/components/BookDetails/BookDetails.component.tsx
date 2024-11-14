@@ -36,6 +36,7 @@ export function BookDetails({
   const [openReview, setOpenReview] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [ratings, setRatings] = useState<Rate[]>(initialRatings)
+  const [userStarRating, setUserStarRating] = useState(0)
 
   const categoryNames = book.categories.map((cat) => cat.name).join(', ')
 
@@ -66,14 +67,16 @@ export function BookDetails({
 
   const fetchRatings = async () => {
     try {
-      const response = await api.get<RatingResponse[]>(
+      const response = await api.get<{ ratings: RatingResponse[] }>(
         `/get-ratings/${book.id}`,
       )
+      const { ratings } = response.data
+
       setRatings(
-        response.data.map((rating) => ({
+        ratings.map((rating) => ({
           userName: rating.user?.name || 'Anônimo',
           userAvatar: rating.user?.avatar_url || '',
-          rate: rating.rate.toString(),
+          rate: rating.rate,
           description: rating.description || '',
           createdAt: dayjs(rating.created_at),
         })),
@@ -92,7 +95,7 @@ export function BookDetails({
     try {
       await api.post('/post-rating', {
         rating: {
-          rate: 4, // TODO pegar o rating correto
+          rate: userStarRating,
           description: data.comment,
           book_id: book.id,
         },
@@ -184,7 +187,11 @@ export function BookDetails({
                   <div>
                     <h3>{user?.name}</h3>
                   </div>
-                  <StarReview isNotReviable={false} review={0} />
+                  <StarReview
+                    isNotReviable={false}
+                    review={0}
+                    onRatingChange={setUserStarRating}
+                  />
                 </BookBoxHeader>
                 <TextInput
                   placeholder="Digite seu comentario"
@@ -206,7 +213,7 @@ export function BookDetails({
                       <p>{rate.createdAt.fromNow()}</p>
                     </div>
 
-                    <StarReview review={4} />
+                    <StarReview review={rate.rate} />
                   </BookBoxHeader>
                   <p>{rate.description}</p>
                 </CommentBox>

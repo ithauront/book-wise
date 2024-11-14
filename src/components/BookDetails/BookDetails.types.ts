@@ -18,7 +18,7 @@ type BookProps = {
 export type Rate = {
   userName: string
   userAvatar: string
-  rate: string
+  rate: number
   description: string
   createdAt: dayjs.Dayjs
 }
