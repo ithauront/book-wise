@@ -103,9 +103,12 @@ export default function Sart() {
       new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
   )
 
-  const sortedTrendingRatings = [...filteredRatings].sort(
-    (a, b) => b.rate - a.rate,
-  )
+  const sortedTrendingRatings = [...filteredRatings].sort((a, b) => {
+    const averageRatingA = averageRatings[a.book?.id || ''] || 0
+    const averageRatingB = averageRatings[b.book?.id || ''] || 0
+
+    return averageRatingB - averageRatingA
+  })
 
   return (
     <StartContainer>
@@ -132,6 +135,8 @@ export default function Sart() {
               <p>Você ainda não avaliou nenhum livro</p>
             ) : (
               userRatings
+                .slice() // o metodo slice sem argumentos cria uma copia do array. assim o reverse não altera o array original.
+                .reverse()
                 .slice(0, showAllUserRatings ? userRatings.length : 1)
                 .map((rating) => (
                   <BookBox
@@ -209,19 +214,28 @@ export default function Sart() {
           {sortedTrendingRatings
             .slice(0, showAllTrending ? ratings.length : 4)
             .map((ratingsSorted) => {
-              const { rate, id } = ratingsSorted
+              const { id, book } = ratingsSorted
               const {
                 cover_url: coverUrl,
                 name,
                 author,
               } = ratingsSorted.book || {}
+              if (!book) {
+                console.error(
+                  `Livro não encontrado para a avaliação com ID ${ratingsSorted.id}`,
+                )
+                return null
+              }
+
+              const averageRatingForBook = averageRatings[book.id] || 0
+
               return (
                 <BookBox
                   key={id}
                   bookCover={coverUrl ? `/${coverUrl}` : ''}
                   bookAuthor={author || ''}
                   bookName={name || ''}
-                  reviewStarsTotal={rate}
+                  reviewStarsTotal={averageRatingForBook}
                   isSummary
                 />
               )
