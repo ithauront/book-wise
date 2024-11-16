@@ -62,7 +62,7 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
             </NavItem>
             <NavItem
               onClick={() => router.push('/profile')}
-              selected={currentPath === '/perfil'}
+              selected={currentPath === '/profile'}
             >
               <User size={24} />
               <p>Perfil</p>
