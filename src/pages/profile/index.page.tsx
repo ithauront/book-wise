@@ -18,6 +18,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { SearchBar } from '../../components/SearchBar/SearchBar'
+import { Profilebar } from '../../components/Profilebar/Profilebar.component'
 
 export default function Profile() {
   dayjs.extend(relativeTime)
@@ -31,6 +32,7 @@ export default function Profile() {
       ? {
           name: session.user?.name || 'User',
           avatar: session.user?.avatar_url || undefined,
+          // createdAt: session.user. depouis pegar do db
         }
       : null
   }, [session])
@@ -119,7 +121,7 @@ export default function Profile() {
       </MainContainer>
 
       <AsideContainer>
-        <h1>ProfileBar</h1>
+        <Profilebar user={user} />
       </AsideContainer>
     </StartContainer>
   )
