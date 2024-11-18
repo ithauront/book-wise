@@ -1,6 +1,7 @@
 export interface User {
   name: string | null
   avatar_url: string | null
+  created_at: Date | null
 }
 
 export interface Category {

@@ -16,12 +16,12 @@ import { signOut } from 'next-auth/react'
 
 interface User {
   name: string | null
-  avatar?: string
+  avatar_url: string | null
 }
 
 interface SidebarProps {
   isLoggedIn: boolean
-  user?: User | null
+  user: User | null
 }
 
 export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
@@ -73,7 +73,11 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
         {isLoggedIn ? (
           <div>
             <LoginButton onClick={handleLogout}>
-              <Avatar size="sm" src={user?.avatar} alt="Avatar do usuário" />
+              <Avatar
+                size="sm"
+                src={user?.avatar_url || ''}
+                alt="Avatar do usuário"
+              />
               <p>{user?.name}</p>
 
               <SignOut color="red" size={20} />

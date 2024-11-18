@@ -38,7 +38,6 @@ export default function Explore() {
     const listBooks = async () => {
       try {
         const response = await api.get('/list-books')
-        console.log('Books data from API:', response.data.allBooks)
         setBooks(response.data.allBooks)
       } catch (error) {
         console.error('Error fetching books:', error)

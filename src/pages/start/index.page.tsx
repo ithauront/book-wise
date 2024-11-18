@@ -9,16 +9,24 @@ import {
   AsideContainer,
 } from './styles'
 
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import { BookBox } from '../../components/BookBox/BookBox.component'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
 import { Rating } from '../types'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
+import { GetServerSideProps } from 'next'
 
-export default function Sart() {
+interface StartProps {
+  user: {
+    name: string | null
+    avatar_url: string | null
+  } | null
+}
+
+export default function Sart({ user }: StartProps) {
   dayjs.extend(relativeTime)
   dayjs.locale('pt-br')
   const { data: session } = useSession()
@@ -30,16 +38,6 @@ export default function Sart() {
   const [showAllRatings, setShowAllRatings] = useState(false)
   const [showAllTrending, setShowAllTrending] = useState(false)
   const [showAllUserRatings, setShowAllUserRatings] = useState(false)
-
-  const user = useMemo(() => {
-    return session
-      ? {
-          name: session.user?.name || 'User',
-          avatar: session.user?.avatar_url || undefined,
-        }
-      : null
-  }, [session])
-  // TODO nessa pagina ele pega a avatar. talvez por conta do useMemo. acho que a ideia é usar o serversideprops e se tiver sessão a gente pega tudo do banco de dados.
   useEffect(() => {
     const listRatings = async () => {
       try {
@@ -244,4 +242,30 @@ export default function Sart() {
       </AsideContainer>
     </StartContainer>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  let user = null
+
+  if (session) {
+    try {
+      const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}`
+      const response = await api.get(
+        `${baseUrl}/api/users/${session.user.email}`,
+      )
+
+      user = response.data.user
+    } catch (error) {
+      console.error('Erro ao buscar usuário:', error)
+    }
+  }
+  // TODO atualizar isso para armazenar o user dentro de um contexto assim compartilhando ele facilmente entre todas as paginas. e ai nos so fariamos essa chamada de getServerSidePropr aqui na pagina start. e ela atualizaria o contexto.
+
+  return {
+    props: {
+      user,
+    },
+  }
 }

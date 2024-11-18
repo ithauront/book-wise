@@ -27,6 +27,7 @@ export default async function handle(
           select: {
             name: true,
             avatar_url: true,
+            created_at: true,
           },
         },
       },
