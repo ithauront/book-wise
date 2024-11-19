@@ -19,6 +19,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { SearchBar } from '../../components/SearchBar/SearchBar'
 import { Profilebar } from '../../components/Profilebar/Profilebar.component'
+import { useUser } from '../../context/UserContext'
 
 export default function Profile() {
   dayjs.extend(relativeTime)
@@ -27,16 +28,9 @@ export default function Profile() {
   const [showAllUserRatings, setShowAllUserRatings] = useState(false)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const { data: session } = useSession()
-  const user = useMemo(() => {
-    return session
-      ? {
-          name: session.user?.name || 'User',
-          avatar: session.user?.avatar_url || undefined,
-          // createdAt: session.user. depouis pegar do db
-        }
-      : null
-  }, [session])
-  // TODO nessa pagina ele pega a avatar. talvez por conta do useMemo. acho que a ideia é usar o serversideprops e se tiver sessão a gente pega tudo do banco de dados.
+
+  const { user } = useUser()
+
   useEffect(() => {
     const listRatings = async () => {
       try {

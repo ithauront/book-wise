@@ -18,11 +18,13 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
 import { GetServerSideProps } from 'next'
+import { useUser } from '../../context/UserContext'
 
 interface StartProps {
   user: {
     name: string | null
     avatar_url: string | null
+    created_at: Date | null
   } | null
 }
 
@@ -38,6 +40,8 @@ export default function Sart({ user }: StartProps) {
   const [showAllRatings, setShowAllRatings] = useState(false)
   const [showAllTrending, setShowAllTrending] = useState(false)
   const [showAllUserRatings, setShowAllUserRatings] = useState(false)
+  const { setUser } = useUser()
+
   useEffect(() => {
     const listRatings = async () => {
       try {
@@ -46,6 +50,7 @@ export default function Sart({ user }: StartProps) {
         setRatings(allRatings)
 
         if (user) {
+          setUser(user)
           const userRatingsFiltered = allRatings.filter(
             (rating: Rating) => rating.user?.name === user.name,
           )
@@ -78,7 +83,7 @@ export default function Sart({ user }: StartProps) {
       }
     }
     listRatings()
-  }, [user])
+  }, [user, setUser])
 
   const formattedDate = (dateString: string | Date) => {
     const relativeTime = dayjs(dateString).fromNow()
@@ -261,7 +266,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       console.error('Erro ao buscar usuário:', error)
     }
   }
-  // TODO atualizar isso para armazenar o user dentro de um contexto assim compartilhando ele facilmente entre todas as paginas. e ai nos so fariamos essa chamada de getServerSidePropr aqui na pagina start. e ela atualizaria o contexto.
 
   return {
     props: {

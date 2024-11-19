@@ -6,10 +6,12 @@ import {
   Separator,
   UserHeader,
 } from './styles'
+import dayjs from 'dayjs'
 
 interface User {
   name: string | null
-  avatar?: string
+  avatar_url: string | null
+  created_at: Date | null
 } // TODO receber como props total de paginas lidas// total de livros avaliados // total de autores avaliados // categoria mais lida
 
 interface ProfilebarProps {
@@ -17,12 +19,14 @@ interface ProfilebarProps {
 }
 
 export function Profilebar({ user }: ProfilebarProps) {
+  const userCreatedAtDate = dayjs(user?.created_at).format('YYYY')
+
   return (
     <ProfilebarContainer>
-      <Avatar size="lg" src={user?.avatar} alt="Avatar do usuário" />
+      <Avatar size="lg" src={user?.avatar_url || ''} alt="Avatar do usuário" />
       <UserHeader>
         <h3>{user?.name}</h3>
-        <p>membro desde 2009</p>
+        <p>membro desde {userCreatedAtDate}</p>
       </UserHeader>
 
       <Separator />

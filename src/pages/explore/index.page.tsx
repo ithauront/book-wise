@@ -16,6 +16,7 @@ import { api } from '../../lib/axios'
 import { Book } from '../types'
 import { BookDetails } from '../../components/BookDetails/BookDetails.component'
 import dayjs from 'dayjs'
+import { useUser } from '../../context/UserContext'
 
 export default function Explore() {
   const { data: session } = useSession()
@@ -24,6 +25,8 @@ export default function Explore() {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [isBookInfoOpen, setIsBookInfoOpen] = useState(false)
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+
+  const { user } = useUser()
 
   const handleBookBoxClick = (book: Book) => {
     setSelectedBook(book)
@@ -91,13 +94,6 @@ export default function Explore() {
     return matchesTopic && matchesSearchTerm
   })
 
-  const user = session
-    ? {
-        name: session.user?.name || 'User',
-        avatar: session.user?.image || undefined,
-      }
-    : null
-  // TODO ver se não podemos verificar com os cookies o usuario e pegar o name e o avatar direto no banco de dados
   return (
     <>
       <ExploreContainer>
