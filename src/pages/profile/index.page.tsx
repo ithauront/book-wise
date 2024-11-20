@@ -9,8 +9,8 @@ import {
 } from '../start/styles'
 // TODO fazer o mybooks com a estilização para o perfil que é um pouco diferente
 
-import { useSession } from 'next-auth/react'
-import { useEffect, useMemo, useState } from 'react'
+import { getSession, useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
 import { Rating } from '../types'
 import { BookBox } from '../../components/BookBox/BookBox.component'
@@ -20,6 +20,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { SearchBar } from '../../components/SearchBar/SearchBar'
 import { Profilebar } from '../../components/Profilebar/Profilebar.component'
 import { useUser } from '../../context/UserContext'
+import { GetServerSideProps } from 'next'
 
 export default function Profile() {
   dayjs.extend(relativeTime)
@@ -119,4 +120,19 @@ export default function Profile() {
       </AsideContainer>
     </StartContainer>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  return { props: {} }
 }

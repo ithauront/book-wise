@@ -40,6 +40,14 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
     signOut()
   }
 
+  const handleProfileClick = () => {
+    if (user) {
+      router.push('/profile')
+    } else {
+      setIsModalOpen(true)
+    }
+  }
+
   return (
     <>
       <SidebarContainer>
@@ -61,7 +69,7 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
               <p>Explorar</p>
             </NavItem>
             <NavItem
-              onClick={() => router.push('/profile')}
+              onClick={handleProfileClick}
               selected={currentPath === '/profile'}
             >
               <User size={24} />
