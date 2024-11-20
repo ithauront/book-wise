@@ -1,10 +1,39 @@
 import type { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, useSession } from 'next-auth/react'
 import { globalStyles } from '../styles/global'
-import { UserProvider } from '../context/UserContext'
+import { UserProvider, useUser } from '../context/UserContext'
+import { useEffect } from 'react'
+import { api } from '../lib/axios'
 
 globalStyles()
-// TODO caso o login não seja feito na pagina start ele não carrega tudo porque o getserverside esta na pagina start. talvez mover a logica do session para o arquivo app. e talvez nesse caso não seja mais necessario o arquivo de context.
+
+function UserUpdater() {
+  const { data: session } = useSession()
+  const { setUser } = useUser()
+
+  useEffect(() => {
+    if (session?.user.email) {
+      const fetchUser = async () => {
+        try {
+          const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}`
+
+          const response = await api.get(
+            `${baseUrl}/api/users/${session.user.email}`,
+          )
+          setUser(response.data.user)
+        } catch (error) {
+          console.error('Erro ao buscar informações do usuario:', error)
+        }
+      }
+      fetchUser()
+    } else {
+      setUser(null)
+    }
+  }, [session, setUser])
+
+  return null
+}
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
@@ -12,6 +41,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <UserProvider>
+        <UserUpdater />
         <Component {...pageProps} />
       </UserProvider>
     </SessionProvider>

@@ -9,7 +9,7 @@ import {
   AsideContainer,
 } from './styles'
 
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { BookBox } from '../../components/BookBox/BookBox.component'
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
@@ -17,18 +17,9 @@ import { Rating } from '../types'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
-import { GetServerSideProps } from 'next'
 import { useUser } from '../../context/UserContext'
 
-interface StartProps {
-  user: {
-    name: string | null
-    avatar_url: string | null
-    created_at: Date | null
-  } | null
-}
-
-export default function Sart({ user }: StartProps) {
+export default function Sart() {
   dayjs.extend(relativeTime)
   dayjs.locale('pt-br')
   const { data: session } = useSession()
@@ -40,7 +31,7 @@ export default function Sart({ user }: StartProps) {
   const [showAllRatings, setShowAllRatings] = useState(false)
   const [showAllTrending, setShowAllTrending] = useState(false)
   const [showAllUserRatings, setShowAllUserRatings] = useState(false)
-  const { setUser } = useUser()
+  const { setUser, user } = useUser()
 
   useEffect(() => {
     const listRatings = async () => {
@@ -50,7 +41,6 @@ export default function Sart({ user }: StartProps) {
         setRatings(allRatings)
 
         if (user) {
-          setUser(user)
           const userRatingsFiltered = allRatings.filter(
             (rating: Rating) => rating.user?.name === user.name,
           )
@@ -247,29 +237,4 @@ export default function Sart({ user }: StartProps) {
       </AsideContainer>
     </StartContainer>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-
-  let user = null
-
-  if (session) {
-    try {
-      const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}`
-      const response = await api.get(
-        `${baseUrl}/api/users/${session.user.email}`,
-      )
-
-      user = response.data.user
-    } catch (error) {
-      console.error('Erro ao buscar usuário:', error)
-    }
-  }
-
-  return {
-    props: {
-      user,
-    },
-  }
 }
