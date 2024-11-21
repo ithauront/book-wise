@@ -17,6 +17,39 @@ export default async function handle(
       where: {
         email: userEmail,
       },
+      select: {
+        id: true,
+        name: true,
+        avatar_url: true,
+        created_at: true,
+        email: true,
+        Rating: {
+          select: {
+            id: true,
+            rate: true,
+            description: true,
+            created_at: true,
+            book: {
+              select: {
+                id: true,
+                name: true,
+                author: true,
+                total_pages: true,
+                categories: {
+                  select: {
+                    category: {
+                      select: {
+                        id: true,
+                        name: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!user) {

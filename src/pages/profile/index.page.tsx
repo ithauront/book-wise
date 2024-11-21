@@ -31,7 +31,7 @@ export default function Profile() {
   const { data: session } = useSession()
 
   const { user } = useUser()
-
+  console.log(user)
   useEffect(() => {
     const listRatings = async () => {
       try {
