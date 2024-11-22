@@ -53,6 +53,10 @@ export const ProfileInfo = styled('div', {
       color: '$gray-300',
       fontSize: '$sm',
     },
+    '& .tiedText': {
+      fontSize: '$xs',
+      color: '$gray-400',
+    },
   },
 
   svg: {
