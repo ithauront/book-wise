@@ -84,6 +84,24 @@ export const BookReview = styled('div', {
   },
 
   variants: {
+    isProfile: {
+      true: {
+        display: 'flex',
+        flexDirection: 'column',
+
+        section: {
+          display: 'flex',
+          flexDirection: 'row',
+
+          '>div': {
+            '> :last-child': {
+              display: 'block',
+              marginTop: '76px',
+            },
+          },
+        },
+      },
+    },
     isSummary: {
       true: {
         '> :first-child': {

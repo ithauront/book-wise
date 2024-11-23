@@ -5,7 +5,6 @@ import { Avatar } from '../Avatar/Avatar.component'
 
 export type BookBoxHeader = {
   userName: string
-
   avatarSrc: string
   reviewStarsFromUser: number
 }
@@ -21,6 +20,7 @@ export interface BookBoxProps {
   isSummary?: boolean
   isExplore?: boolean
   isUserReview?: boolean
+  isProfile?: boolean
   openBookInfo?: () => void
 }
 
@@ -35,6 +35,7 @@ export function BookBox({
   isSummary = false,
   isExplore = false,
   isUserReview = false,
+  isProfile = false,
   openBookInfo,
 }: BookBoxProps) {
   return (
@@ -48,19 +49,26 @@ export function BookBox({
             <p>{reviewDate}</p>
           </div>
 
-          <StarReview review={headerProps.reviewStarsFromUser} />
+          {isProfile && <StarReview review={headerProps.reviewStarsFromUser} />}
         </BookBoxHeader>
       ) : null}
       <BookReview
         isSummary={isSummary}
         isExplore={isExplore}
         isUserReview={isUserReview}
+        isProfile={isProfile}
       >
-        <Image src={bookCover} alt="Book cover" width={150} height={200} />
+        {!isProfile && (
+          <Image src={bookCover} alt="Book cover" width={150} height={200} />
+        )}
         <section>
+          {isProfile && (
+            <Image src={bookCover} alt="Book cover" width={93} height={134} />
+          )}
           {isUserReview ? (
             <div className="isUserReviewHeaderDiv">
               <p>{reviewDate}</p>
+
               <StarReview review={reviewStarsTotal} />
             </div>
           ) : (
@@ -69,14 +77,17 @@ export function BookBox({
           <div>
             <h3>{bookName}</h3>
             <p>{bookAuthor}</p>
+
+            {isProfile && <StarReview review={reviewStarsTotal} />}
           </div>
-          <p>{reviewText || ''}</p>
+          {!isProfile && <p>{reviewText || ''}</p>}
           {isExplore || isSummary ? (
             <StarReview review={reviewStarsTotal} />
           ) : (
             ''
           )}
         </section>
+        {isProfile && <p>{reviewText || ''}</p>}
       </BookReview>
     </BookBoxContainer>
   )

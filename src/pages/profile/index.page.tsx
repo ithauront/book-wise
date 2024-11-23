@@ -31,7 +31,7 @@ export default function Profile() {
   const { data: session } = useSession()
 
   const { user } = useUser()
-  console.log(user)
+
   useEffect(() => {
     const listRatings = async () => {
       try {
@@ -100,16 +100,18 @@ export default function Profile() {
               .reverse()
               .slice(0, showAllUserRatings ? userRatings.length : 1)
               .map((rating) => (
-                <BookBox
-                  key={rating.id}
-                  bookName={rating.book?.name || ''}
-                  bookAuthor={rating.book?.author || ''}
-                  bookCover={`/${rating.book?.cover_url || ''}`}
-                  reviewStarsTotal={rating.rate}
-                  reviewText={rating.description}
-                  reviewDate={formattedDate(rating.created_at)}
-                  isUserReview
-                />
+                <>
+                  <p>{formattedDate(rating.created_at)}</p>
+                  <BookBox
+                    key={rating.id}
+                    bookName={rating.book?.name || ''}
+                    bookAuthor={rating.book?.author || ''}
+                    bookCover={`/${rating.book?.cover_url || ''}`}
+                    reviewStarsTotal={rating.rate}
+                    reviewText={rating.description}
+                    isProfile
+                  />
+                </>
               ))
           )}
         </MyBooks>
