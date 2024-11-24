@@ -48,8 +48,11 @@ export function BookBox({
             <h3>{headerProps.userName}</h3>
             <p>{reviewDate}</p>
           </div>
-
-          {isProfile && <StarReview review={headerProps.reviewStarsFromUser} />}
+          {(isProfile || (!isSummary && !isExplore && !isUserReview)) && (
+            <StarReview
+              review={headerProps?.reviewStarsFromUser || reviewStarsTotal}
+            />
+          )}
         </BookBoxHeader>
       ) : null}
       <BookReview
