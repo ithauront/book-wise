@@ -12,6 +12,10 @@ export const BookBoxContainer = styled(Box, {
       },
       false: {},
     },
+    isProfile: {
+      true: { width: '35rem' },
+      false: {},
+    },
   },
   defaultVariants: {
     isUserReview: false,
@@ -152,7 +156,7 @@ export const BookReview = styled('div', {
       true: {
         '&:hover': {
           cursor: 'pointer',
-        }, // TODO por enquanto deixa o pointer aqui. talvez depois colocar em outros lugares se outros modos tambem forem clicaveis.
+        },
         '> :first-child': {
           width: '6.75rem',
           height: '9.5rem',

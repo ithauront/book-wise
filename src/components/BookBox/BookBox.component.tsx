@@ -39,7 +39,11 @@ export function BookBox({
   openBookInfo,
 }: BookBoxProps) {
   return (
-    <BookBoxContainer isUserReview={isUserReview} onClick={openBookInfo}>
+    <BookBoxContainer
+      isUserReview={isUserReview}
+      onClick={openBookInfo}
+      isProfile={isProfile}
+    >
       {headerProps ? (
         <BookBoxHeader>
           <Avatar src={headerProps.avatarSrc} />
