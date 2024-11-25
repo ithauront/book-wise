@@ -3,7 +3,7 @@ import { styled } from '../../stitches.config'
 
 export const ContainerForm = styled('form', {
   position: 'relative',
-  maxWidth: '25rem',
+  maxWidth: '38rem',
 }) as React.FC<FormHTMLAttributes<HTMLFormElement>>
 
 export const SearchInput = styled('input', {
@@ -28,6 +28,17 @@ export const SearchInput = styled('input', {
 
   '&:focus': {
     borderColor: '$green-200',
+  },
+  variants: {
+    isProfile: {
+      true: {
+        width: '38rem',
+      },
+    },
+    false: {},
+  },
+  defaultVariants: {
+    isProfile: false,
   },
 })
 
