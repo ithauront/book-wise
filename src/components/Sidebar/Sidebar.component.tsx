@@ -80,7 +80,7 @@ export function Sidebar({ isLoggedIn = false, user }: SidebarProps) {
 
         {isLoggedIn ? (
           <div>
-            <LoginButton onClick={handleLogout}>
+            <LoginButton onClick={handleLogout} isLoggedIn={!!user}>
               <Avatar
                 size="sm"
                 src={user?.avatar_url || ''}

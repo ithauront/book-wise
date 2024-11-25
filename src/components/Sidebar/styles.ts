@@ -76,11 +76,20 @@ export const LoginButton = styled('button', {
   padding: '$1',
 
   cursor: 'pointer',
-
+  variants: {
+    isLoggedIn: {
+      true: {
+        p: {
+          fontWeight: '$regular',
+        },
+      },
+      false: {},
+    },
+  },
   p: {
-    fontWeight: 'bold',
     color: '$gray-200',
-  }, // TODO modificar o bold apenas para uma variante para quando estiver no login
+    fontWeight: 'bold',
+  },
 
   transition: '0.2s ease',
 
