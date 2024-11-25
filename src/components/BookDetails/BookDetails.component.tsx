@@ -123,7 +123,6 @@ export function BookDetails({
     b.createdAt.diff(a.createdAt),
   )
 
-  // TODO fazer a logica e estilizaçao do starReview quando ele é reviable
   return (
     <Portal>
       <Overlay bookDetails onClick={onClose}>

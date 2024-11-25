@@ -1,18 +1,7 @@
 import { Sidebar } from '../../components/Sidebar/Sidebar.component'
-import {
-  MainContainer,
-  MyBooks,
-  StartContainer,
-  StyledChartLineUp,
-  SessionTitle,
-  AsideContainer,
-} from '../start/styles'
-// TODO fazer o mybooks com a estilização para o perfil que é um pouco diferente
 
-import { getSession, useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { api } from '../../lib/axios'
-import { Rating } from '../types'
+import { getSession } from 'next-auth/react'
+import { useState } from 'react'
 import { BookBox } from '../../components/BookBox/BookBox.component'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -21,67 +10,45 @@ import { SearchBar } from '../../components/SearchBar/SearchBar'
 import { Profilebar } from '../../components/Profilebar/Profilebar.component'
 import { useUser } from '../../context/UserContext'
 import { GetServerSideProps } from 'next'
+import {
+  AsideContainer,
+  MainContainer,
+  MyBooks,
+  ProfileContainer,
+  SessionTitle,
+  StyledUser,
+} from './styles'
 
 export default function Profile() {
   dayjs.extend(relativeTime)
   dayjs.locale('pt-br')
-  const [userRatings, setUserRatings] = useState<Rating[]>([])
-  const [showAllUserRatings, setShowAllUserRatings] = useState(false)
+
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const { data: session } = useSession()
 
   const { user } = useUser()
-
-  useEffect(() => {
-    const listRatings = async () => {
-      try {
-        const response = await api.get('/list-ratings')
-        const allRatings = response.data.allRatings
-
-        if (user) {
-          const userRatingsFiltered = allRatings.filter(
-            (rating: Rating) => rating.user?.name === user.name,
-          )
-          setUserRatings(userRatingsFiltered)
-        }
-
-        const ratingsSums: {
-          [bookId: string]: { sum: number; count: number }
-        } = {}
-
-        allRatings.forEach((rating: Rating) => {
-          const bookId = rating.book?.id
-          if (bookId) {
-            if (!ratingsSums[bookId]) {
-              ratingsSums[bookId] = { sum: 0, count: 0 }
-            }
-            ratingsSums[bookId].sum += rating.rate
-            ratingsSums[bookId].count += 1
-          }
-        })
-      } catch (error) {
-        console.error('Error fetching books:', error)
-      }
-    }
-    listRatings()
-  }, [user])
 
   const handleSearchSubmit = (data: { search: string }) => {
     setSearchTerm(data.search)
   }
 
+  const filteredRatings =
+    user?.Rating?.filter((rating) =>
+      rating.book?.name
+        .toLocaleLowerCase()
+        .includes(searchTerm.toLocaleLowerCase()),
+    ) || []
+
   const formattedDate = (dateString: string | Date) => {
     const relativeTime = dayjs(dateString).fromNow()
     return relativeTime.charAt(0).toUpperCase() + relativeTime.slice(1)
   }
-
   return (
-    <StartContainer>
-      <Sidebar isLoggedIn={!!session} user={user} />
+    <ProfileContainer>
+      <Sidebar isLoggedIn={!!user} user={user} />
 
       <MainContainer>
         <p>
-          <StyledChartLineUp size={32} />
+          <StyledUser size={32} />
           Perfil
         </p>
 
@@ -90,20 +57,19 @@ export default function Profile() {
             <SearchBar
               placeholder="Buscar livro avaliado"
               onSubmit={handleSearchSubmit}
+              isProfile
             />
           </SessionTitle>
-          {userRatings.length === 0 ? (
+          {filteredRatings.length === 0 ? (
             <p>Você ainda não avaliou nenhum livro</p>
           ) : (
-            userRatings
-              .slice() // o metodo slice sem argumentos cria uma copia do array. assim o reverse não altera o array original.
+            filteredRatings
+              .slice()
               .reverse()
-              .slice(0, showAllUserRatings ? userRatings.length : 1)
               .map((rating) => (
-                <>
+                <div key={rating.id}>
                   <p>{formattedDate(rating.created_at)}</p>
                   <BookBox
-                    key={rating.id}
                     bookName={rating.book?.name || ''}
                     bookAuthor={rating.book?.author || ''}
                     bookCover={`/${rating.book?.cover_url || ''}`}
@@ -111,7 +77,7 @@ export default function Profile() {
                     reviewText={rating.description}
                     isProfile
                   />
-                </>
+                </div>
               ))
           )}
         </MyBooks>
@@ -120,7 +86,7 @@ export default function Profile() {
       <AsideContainer>
         <Profilebar user={user} />
       </AsideContainer>
-    </StartContainer>
+    </ProfileContainer>
   )
 }
 

@@ -34,6 +34,7 @@ export default async function handle(
                 id: true,
                 name: true,
                 author: true,
+                cover_url: true,
                 total_pages: true,
                 categories: {
                   select: {
