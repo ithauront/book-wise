@@ -4,6 +4,7 @@ import { signIn, getSession } from 'next-auth/react'
 import {
   AuthError,
   ButtonBox,
+  CoverImage,
   HomeContainer,
   LoginBox,
   LoginContainer,
@@ -31,7 +32,9 @@ export default function Home() {
 
   return (
     <HomeContainer>
-      <Image src={cover} alt="Cover image for book-wise" quality={100} />
+      <CoverImage>
+        <Image src={cover} alt="Cover image for book-wise" quality={100} />
+      </CoverImage>
 
       <LoginContainer>
         <LoginBox>

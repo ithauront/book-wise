@@ -12,6 +12,11 @@ export const Overlay = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
   overflowY: 'auto',
+  '@media(max-width: 768px)': {
+    marginLeft: '7rem',
+
+    background: 'transparent',
+  },
 
   variants: {
     bookDetails: {

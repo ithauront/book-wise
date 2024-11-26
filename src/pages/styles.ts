@@ -1,8 +1,16 @@
 import { styled } from '../stitches.config'
-// TODO fazer responsividade para telas menores
+// TODO talvez trazer algumas estilizações repetitivas que estão no start e no profile para essa pagina de styles e eliminar repetições.
 export const HomeContainer = styled('div', {
   display: 'flex',
   alignItems: 'center',
+})
+
+export const CoverImage = styled('div', {
+  display: 'block',
+
+  '@media(max-width: 768px)': {
+    display: 'none',
+  },
 })
 
 export const LoginContainer = styled('div', {

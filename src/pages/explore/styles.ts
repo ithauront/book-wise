@@ -5,6 +5,15 @@ export const ExploreContainer = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   padding: '0 6rem 0 0',
+  '@media(max-width: 768px)': {
+    flexDirection: 'column',
+
+    '>:first-child': {
+      marginLeft: '1rem',
+      height: '20rem',
+      width: '100vw',
+    },
+  },
 })
 
 export const MainContainer = styled('div', {
@@ -21,6 +30,16 @@ export const SearchTopicsContainer = styled('div', {
   gap: '$3',
   maxWidth: '62.25rem',
   flexWrap: 'wrap',
+
+  '@media(max-width: 768px)': {
+    width: '100vw',
+    height: '13rem',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(8rem, 1fr))',
+    gap: '$2',
+    justifyContent: 'center',
+    marginLeft: '-4rem',
+  },
 })
 
 export const TitleContainer = styled('div', {
@@ -40,6 +59,13 @@ export const TitleContainer = styled('div', {
   '> :last-child': {
     width: '27rem',
   },
+  '@media(max-width: 768px)': {
+    flexDirection: 'column',
+    marginLeft: '8rem',
+    '> :last-child': {
+      width: '15rem',
+    },
+  },
 })
 
 export const ExploreContent = styled('main', {
@@ -47,6 +73,13 @@ export const ExploreContent = styled('main', {
   flexWrap: 'wrap',
   maxWidth: '73rem',
   gap: '$5',
+  '@media(max-width: 768px)': {
+    width: '100vw',
+    height: '13rem',
+    gap: '$2',
+    justifyContent: 'center',
+    marginLeft: '-5rem',
+  },
 })
 
 export const StyledBinocular = styled(Binoculars, {

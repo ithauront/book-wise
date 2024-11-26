@@ -5,6 +5,15 @@ export const StartContainer = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   padding: '0 6rem 0 0',
+  '@media(max-width: 768px)': {
+    flexDirection: 'column',
+
+    '>:first-child': {
+      marginLeft: '5rem',
+      height: '20rem',
+      width: '100vw',
+    },
+  },
 })
 
 export const MainContainer = styled('div', {
@@ -19,6 +28,9 @@ export const MainContainer = styled('div', {
     fontWeight: '$bold',
     fontSize: '$2xl',
   },
+  '@media(max-width: 768px)': {
+    padding: '1rem 0',
+  },
 })
 
 export const MyBooks = styled('article', {
@@ -27,6 +39,7 @@ export const MyBooks = styled('article', {
   flexDirection: 'column',
   gap: '$4',
 })
+
 export const SessionTitle = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
@@ -54,6 +67,11 @@ export const AsideContainer = styled('div', {
   flexDirection: 'column',
   padding: '9.125rem 6rem',
   gap: '$4',
+  '@media(max-width: 768px)': {
+    width: '100vw',
+    padding: '1rem 0',
+    marginLeft: '7rem',
+  },
 })
 export const TrendingBooks = styled('aside', {
   display: 'flex',

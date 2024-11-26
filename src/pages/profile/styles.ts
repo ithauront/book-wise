@@ -5,6 +5,15 @@ export const ProfileContainer = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   padding: '0 6rem 0 0',
+  '@media(max-width: 768px)': {
+    flexDirection: 'column',
+
+    '>:first-child': {
+      marginLeft: '6rem',
+      height: '20rem',
+      width: '100vw',
+    },
+  },
 })
 
 export const MainContainer = styled('div', {
@@ -18,6 +27,9 @@ export const MainContainer = styled('div', {
     color: '$gray-100',
     fontWeight: '$bold',
     fontSize: '$2xl',
+  },
+  '@media(max-width: 768px)': {
+    padding: '1rem 0',
   },
 })
 
@@ -56,6 +68,9 @@ export const AsideContainer = styled('div', {
   flexDirection: 'column',
   padding: '9.125rem 6rem',
   gap: '$4',
+  '@media(max-width: 768px)': {
+    marginLeft: '3rem',
+  },
 })
 
 export const StyledUser = styled(User, {
